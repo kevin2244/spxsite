@@ -7,22 +7,18 @@ namespace App\Handler;
 use function error_log;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-error_log('HP FActory...');
-
-class HomePageHandlerFactory
+class CarModelHandlerFactory
 {
     public function __invoke(ContainerInterface $container) : RequestHandlerInterface
     {
-
-        error_log('HP FActory...');
-        $router   = $container->get(RouterInterface::class);
         $template = $container->has(TemplateRendererInterface::class)
             ? $container->get(TemplateRendererInterface::class)
             : null;
 
-        return new HomePageHandler($router, $template, get_class($container));
+        error_log('FActory hosts:'.print_r($container->get('config')['hosts'], true));
+
+        return new CarModelHandler($template, $container->get('config')['marques'], $container->get('config')['hosts']);
     }
 }

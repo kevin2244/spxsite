@@ -1,0 +1,165 @@
+<?php
+
+$spxurl = $this->spxIpAddr."/model/modelid/".$this->modelid;
+$cardata = json_decode($this->modelresponse, true);
+
+$spxmodel_Model = '';
+$spxmodel_Marque = '';
+$spxmodel_ModelDetail = '';
+$extractc = extract($cardata,EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel');
+?>
+
+<?php
+//TODO - should be Marque Model Submodel(consisting of various fields depending
+//on distinguishing fields availability e.g. engine, submodel, transmission)
+ $this->headTitle("$spxmodel_Marque $spxmodel_Model $spxmodel_ModelDetail");
+ ?>
+
+<?php
+$headerline =<<<EOF
+<div class="carheader">$spxmodel_Marque $spxmodel_Model $spxmodel_ModelDetail</div>
+EOF;
+
+$excludes = ['Marque','Model'];
+
+$cardatalines = '';
+
+$price_indicative = 0;
+
+foreach ($cardata as $field => $val) {
+
+    switch($field) {
+
+        case '_id':
+        break;
+
+        case (in_array($field, $excludes)):
+        break;
+
+        default:
+
+        $cardatalines .=<<<EOF
+        <div class="cardataline">
+            $field
+        </div>
+        <div class="cardataline">
+            $val
+        </div>
+EOF;
+
+        if (strpos($field, 'price_i') !== false  ) {
+            $spxmodel_dispprice = money_format('%.2n', $val);
+            $price_indicative = $val;
+        }
+    }
+}
+
+$modeldata = '';
+
+$cargrid =<<<EOF
+<div class="cargrid">
+EOF;
+
+    $cargrid .= $headerline;
+
+    $cargrid .= $cardatalines;
+
+    $cargrid .=<<<EOF
+</div>
+EOF;
+
+//echo $cargrid;
+
+$ident = 'thiscar';
+$paraident = 'par-'.$ident;
+$priceident = 'price-'.$ident;
+$scrappageident = 'scrappage-'.$ident;
+$deposit = 5000;
+
+//TODO - scrappage discount must be accessible via API
+//Or provide estimate based on price/marque/type etc.
+$scrappagediscount = 2000;
+
+/*
+$hpform =<<<EOF
+<div id="$paraident" class="$ident marker">
+    <div class="quote $ident" >
+        <p>HP Quote Estimate<br />
+        <p><b><i>STEP 1.</i></b> Adjust inputs as necessary, monthly payments will update instantly.
+            For example if you think you can get a zero interest rate deal enter 0 in the Interest Rate field
+            or if your purchase price is different adjust the price field.</p>
+
+        <p>Price(£):  <input type="text" class="quoteinput price $paraident" value="$price_indicative" style="width: 100px; height: 1em"><br />
+        <p>Deposit(£): <input type="text" class="quoteinput deposit $paraident" value="$deposit" ><br />
+        <p>Scrappage/Trade In Discount(£): <input type="text" class="quoteinput scrappagedisc $paraident" value="$scrappagediscount" ><br />
+        <p>Amount to finance: <span class="quotedisplay financeamount $paraident">0</span><br />
+        <p>Number of monthly payments: <input type="text" class="quoteinput numpayments $paraident" value="48" ><br />
+        <p>Interest Rate(%): <input type="text" class="quoteinput interestrate $paraident" value="5.9"><br />
+        <p>Your Estimated Monthly Payment for this vehicle:&nbsp;<span style="color:green; font-weight:bold; font-size:xx-large" class="quotedisplay monthlypayment $paraident">0</span><br />
+        <p><b><i>STEP 2.</i></b> Get it financed at <a href="http://www.paidonresults.net/c/49722/1/1433/clc1" style="font-size:x-large">Car Loans Compare</a>
+        <p><b><i>STEP 3.</i></b>With your finance in place this now puts you in a strong position to shop around and negotiate further discounts with your dealer. Happy Motoring!
+    </div>
+</div>
+EOF;
+*/
+
+
+$hpform =<<<EOF
+<div id="$paraident" class="$ident marker quotegrid">
+    <div class="quotegridfieldheader">
+        HP Quote Estimate        
+    </div>
+    
+    <div class="quotegridtext">
+        <b><i>STEP 1.</i></b> Adjust inputs as necessary, monthly payments will update instantly.
+            For example if you think you can get a zero interest rate deal enter 0 in the Interest Rate field
+            or if your purchase price is different adjust the price field.
+    </div>    
+    
+    <div class="quotegridfield">Price(£)........</div>
+    <div class="quotegridvalue"><input type="text" class="quoteinput price priceinput $paraident" value="$price_indicative" autocomplete="off"></div>
+    
+    <div class="quotegridfield">Deposit(£)........</div>
+    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput deposit $paraident" value="$deposit" autocomplete="off"></div>
+    
+    <div class="quotegridfield">Scrappage/Trade-In (£)........</div>
+    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput scrappagedisc $paraident" value="$scrappagediscount"></div>
+
+    <div class="quotegridfield">Amount to finance........</div>
+    <div class="quotegridvalue"> <span class="quotedisplay financeamount $paraident">0</span></div>
+
+    <div class="quotegridfield">No. monthly payments........</div>
+    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput numpayments $paraident" value="48" ></div>
+
+    <div class="quotegridfield">Interest Rate(%)........</div>
+    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput interestrate $paraident" value="5.9"></div>
+    
+    <div class="quotegridfield">Est. Monthly Payment(£).....</div>
+    <div class="quotegridvalue"><span style="color:green; font-weight:bold; font-size:xx-large" class="quotedisplay monthlypayment $paraident">0</span></div>    
+
+    <div class="quotegridtext">
+       <b><i>STEP 2.</i></b> Get it financed at <a href="http://www.paidonresults.net/c/49722/1/1433/clc1" style="font-size:x-large">Car Loans Compare</a> 
+    </div>
+
+        
+</div>
+EOF;
+
+$cont=<<<EOF
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            $cargrid
+        </div>
+        <div class="col-md-4">
+            $hpform
+        </div>
+    </div>
+</div>
+EOF;
+
+echo $cont;
+
+
+?>
+

@@ -1,0 +1,92 @@
+<div>
+    <?php
+    $url = $this->url;
+    $marque = $this->marque;
+    $model = $this->model;
+    $grid=<<<EOF
+    <div class="modelgrid">
+    <div class="modelheader">
+    $marque $model
+    </div>
+EOF;
+
+    $this->headTitle( $marque .' '.$model );
+    $cardata = json_decode($this->modelresponse, true);
+
+
+    $fields = [];
+    $excludes = ['Marque'];
+    $descriptionFields = ['Model','ModelDetail','BodyStyle','Engine'];
+    $dataline_1 = ['Fuel','Transmission','VED'];
+    $colheaders = [];
+    $description = '';
+
+    foreach ($cardata as $truck) {
+        $showfields = array_diff(array_keys($truck),$excludes);
+        $fields += array_diff($showfields, $fields);
+    }
+
+
+    foreach ($cardata as $car) {
+
+        $spxmodel_Bodystyle='';
+        $spxmodel_Model='';
+        $spxmodel_ModelDetail='';
+        $spxmodel_Fuel='';
+        $spxmodel_Transmission='';
+        $spxmodel_Engine='';
+
+        foreach ($fields as $field) {
+
+            //set all possible fields
+            //to avoid contamination
+            //from previous items in the loop
+            switch ($field) {
+
+                case '_id':
+                    $spxmodel_id = $car[$field]['$oid'];
+                    break;
+
+                default:
+                    $str = "spxmodel_$field";
+                    $$str = 'N/A';
+                    break;
+            }
+            if (strpos($field, 'price_i') !== false  ) {$spxmodel_dispprice = money_format('%.2n', $car[$field]);}
+
+
+            $extractc = extract($car,EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel');
+        }
+        $spxSiteIpAddr = $this->hosts['SPX_SITE_IP_ADDR'];
+        $dispmodel =<<<EOF
+        <a href="http://$spxSiteIpAddr/marque/$marque/model/$model/id/$spxmodel_id/"> $spxmodel_Model $spxmodel_ModelDetail<br />  $spxmodel_Engine $spxmodel_Bodystyle</a>
+EOF;
+        $grid.=<<<EOF
+        <div class="modelline">
+        $dispmodel
+        </div>
+EOF;
+
+        $dataline_1spx = "$spxmodel_Fuel $spxmodel_Transmission";
+
+        $grid.=<<<EOF
+        <div class="modeldataline_1">
+        $dataline_1spx
+        </div>
+EOF;
+
+        $dataline_3spx = "$spxmodel_dispprice";
+        $grid.=<<<EOF
+        <div class="modeldataline_3">
+        <span class="price">$dataline_3spx</span>
+        </div>
+EOF;
+    }
+
+    $grid.=<<<EOF
+</div>
+EOF;
+
+    echo $grid;
+?>
+</div>

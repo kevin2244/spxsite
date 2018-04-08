@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 namespace App;
+use function error_log;
+
+
+error_log('In Config Provider...');
 
 /**
  * The configuration provider for the App module
@@ -31,12 +35,20 @@ class ConfigProvider
      */
     public function getDependencies() : array
     {
+        error_log('Returning Dependencies');
         return [
             'invokables' => [
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
-                Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
+
+                Handler\HomePageHandler::class   => Handler\HomePageHandlerFactory::class,
+                Handler\CarMarquesHandler::class => Handler\CarMarquesHandlerFactory::class,
+                Handler\CarModelHandler::class => Handler\CarModelHandlerFactory::class,
+                Handler\CarModelsHandler::class  => Handler\CarModelsHandlerFactory::class,
+                Handler\AboutHandler::class => Handler\AboutHandlerFactory::class,
+                Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
+                Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class
             ],
         ];
     }

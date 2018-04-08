@@ -35,4 +35,12 @@ use Zend\Expressive\MiddlewareFactory;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
+    $app->get('/about', App\Handler\AboutHandler::class, 'about');
+    $app->get('/car-finance', App\Handler\CarFinanceHandler::class, 'car-finance');
+    $app->get('/hire-purchase-hp', App\Handler\HirePurchaseHP::class, 'hire-purchase-hp');
+    $app->get('/scrappage-schemes-explained', App\Handler\ScrappageSchemesExplainedHandler::class, 'scrappage-schemes-explained');
+    $app->get('/marque/{marque:.*}/model/{model:.*}/id/{modelid:.*}', App\Handler\CarModelHandler::class, 'carmodel');
+    $app->get('/marque/{marque:.*}/model/{model:.*}', App\Handler\CarModelsHandler::class, 'carmodels');
+    $app->get('/marque/{marque:.*}', App\Handler\CarMarquesHandler::class, 'carmarques');
+
 };

@@ -1,8 +1,11 @@
 <?php
 $this->headLink()
+    ->prependStylesheet('/styles/style.css')
     ->prependStylesheet('https://use.fontawesome.com/releases/v5.0.6/css/all.css')
     ->prependStylesheet('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
+
 $this->inlineScript()
+    ->prependFile('/js/scrappage_custom_script_3.js')
     ->prependFile('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js')
     ->prependFile('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js')
     ->prependFile('https://code.jquery.com/jquery-3.3.1.min.js');
@@ -14,14 +17,11 @@ $this->inlineScript()
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon" href="https://framework.zend.com/ico/favicon.ico" />
-    <?=$this->headTitle('zend-expressive')->setSeparator(' - ')->setAutoEscape(false)?>
+    <?= $this->headTitle('Scrappage')->setSeparator(' | ')->setAutoEscape(false) ?>
     <?=$this->headMeta()?>
     <?=$this->headLink()?>
     <style>
         body { padding-top: 70px; }
-        .app { min-height: 100vh; }
-        .app-footer { padding-bottom: 1em; }
-        .zf-green, h2 a { color: #68b604; }
     </style>
 </head>
 <body>
@@ -34,64 +34,137 @@ $this->inlineScript()
                     </button>
                     <!-- Brand -->
                     <a class="navbar-brand" href="<?=$this->url('home')?>">
-                        <img src="https://framework.zend.com/images/logos/zf-logo-mark.png" alt="Zend Expressive" height="28" />
+                        <img src="/images/cropped-glowing_scrappage_on_rust_rnd.gif" alt="Scrappage.co.uk Logo" height="40" />
                     </a>
                 </div>
                 <!-- Links -->
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a href="https://docs.zendframework.com/zend-expressive" target="_blank" class="nav-link">
-                                <i class="fa fa-book"></i> Docs
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://github.com/zendframework/zend-expressive" target="_blank" class="nav-link">
-                                <i class="fa fa-wrench"></i> Contribute
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?=$this->url('api.ping')?>" class="nav-link">
-                                Ping Test
-                            </a>
-                        </li>
-                        <li class="nav-item">
 
-			<?= 
-			$this->partial('layout::marquemenu');
-			?>
 
+                        <li class="nav-item">
+                            <a href="<?=$this->url('about')?>" class="nav-link">
+                                About
+                            </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="<?=$this->url('scrappage-schemes-explained')?>" class="nav-link">
+                                Scrappage Explained
+                            </a>
+                        </li>
+
+
+
+                        <li class="nav-item">
+                            <div class="dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    New Cars
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'mercedes'])) ?>">Mercedes-Benz</a>
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'ford'])) ?>">Ford</a>
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'mazda'])) ?>">Mazda</a>
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'kia'])) ?>">Kia</a>
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'toyota'])) ?>">Toyota</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= $this->serverUrl('/sp/') ?>" class="nav-link">
+                                Blog
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Scrappage Schemes By Manufacturer
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="<?= $this->serverUrl('/sp/mercedes') ?>">Mercedes-Benz</a>
+                                    <a class="dropdown-item" href="<?= $this->serverUrl('/sp/ford') ?>">Ford</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Finance
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('car-finance')) ?>">Get Car Finance</a>
+                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('hire-purchase-hp')) ?>">HP Finance</a>
+                                </div>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <!--div class="app-content"-->
-        <!--main class="container-fluid"-->
 	<div class="container-fluid">
 	     <div class="row">		
-	     	  <div class="col-md-9">
-            	       <?=$this->content?>
+	     	  <div class="col-md-10">
+                  <?=$this->content?>
 	    	  </div>
-	    	  <div class="col-md-3">
-	    	       SIDEBAR
+	    	  <div class="col-md-2">
+                  <div>
+
+                      <h2><b>POSTS</b></h2>
+
+                      <ul>
+                          <li>
+                              <a href="https://scrappage.co.uk/sp/hyundai-extends-scrappage-scheme/">Hyundai Extends Scrappage Scheme</a>
+                              <span class="post-date">4th January 2018</span>
+                          </li>
+                          <li>
+                              <a href="https://scrappage.co.uk/sp/kia-extends-scrappage-scheme-to-2018/">Kia Extends Scrappage Scheme to 2018</a>
+                              <span class="post-date">2nd January 2018</span>
+                          </li>
+                          <li>
+                              <a href="https://scrappage.co.uk/sp/vw-extends-scrappage-scheme-into-2018/">VW extends scrappage scheme into 2018</a>
+                              <span class="post-date">31st December 2017</span>
+                          </li>
+                          <li>
+                              <a href="https://scrappage.co.uk/sp/toyota-extends-scrappage-scheme/">Toyota Extends Scrappage Scheme</a>
+                              <span class="post-date">13th December 2017</span>
+                          </li>
+                          <li>
+                              <a href="https://scrappage.co.uk/sp/ford-extends-scrappage-scheme/">Ford Extends Scrappage Scheme</a>
+                              <span class="post-date">13th December 2017</span>
+                          </li>
+                          <li>
+                              <a href="https://scrappage.co.uk/sp/diesel-drivers-could-face-repair-bill-or-1000-fine/">Diesel drivers could face repair bill or £1,000 fine</a>
+                              <span class="post-date">29th October 2017</span>
+                          </li>
+                      </ul>
+                      <ul>
+                          <li>
+                              Check these out:
+                          </li>
+                          <li>
+                              <a href="<?= $this->serverUrl($this->url('carmodel', ['marque' => 'Kia', 'model' => 'Picanto','modelid' => '5aad14d8c65afe6fa89be359'])) ?>">Kia Picanto £58.48/mo</a>
+                          </li>
+
+                      </ul>
+                      <!--<div style="margin-left:auto; margin-right:0; background-color: darkgoldenrod; height: 600px; width: 120px"></div>-->
+                  <div>
 	    	  </div>
 	    </div>
 	</div>	
-        <!--/main-->
-    <!--/div-->
 
-    <footer class="app-footer">
+    <div class="footer">
         <div class="container">
-            <hr />
+
             <p>
-                &copy; 2005 - <?=date('Y')?> by Zend Technologies Ltd. All rights reserved.
+                &copy; 2009 - <?=date('Y')?> scrappage.co.uk. All rights reserved.
             </p>
         </div>
-    </footer>
-
+    </div>
     <?=$this->inlineScript()?>
 </body>
 </html>
