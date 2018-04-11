@@ -46,8 +46,6 @@ class CarModelsHandler implements RequestHandlerInterface
         $data = [];
         $data['marque'] = $marque;
         $data['model'] = $model;
-        $data['url'] = $spxIpAddr;
-        $data['hosts'] = $this->hosts;
         $data['modelresponse'] = $response->getBody();
 
         return new HtmlResponse($this->template->render('app::car-models', $data));

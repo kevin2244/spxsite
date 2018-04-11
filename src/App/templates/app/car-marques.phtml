@@ -1,16 +1,11 @@
 <?php $this->headTitle('Car Marques &#8211; Scrappage'); ?>
-
 <div>
+    <h2><b><?= ucfirst($marque)?></b></h2>
     <?php
-    $url = 'http://192.168.1.21:8081';
-    $marque = $this->marque;
-
-    echo '<h2><b>'.ucfirst($marque).'</b></h2>';
-
-
     foreach(json_decode($this->modelresponse) as $model) {
-                                $link = "$url/marque/$marque/model/$model/";
-          echo '<br />'.    '<a href="'.$link.'">'.$model.'</a>';
+
+        $url = $this->serverUrl($this->url('carmodels',['marque' => $marque, 'model' => $model]));
+        echo '<br />'.    '<a href="'.$url.'">'.$model.'</a>';
     }
     ?>
 </div>

@@ -68,7 +68,7 @@ EOF;
 </div>
 EOF;
 
-//echo $cargrid;
+
 
 $ident = 'thiscar';
 $paraident = 'par-'.$ident;
@@ -79,30 +79,6 @@ $deposit = 5000;
 //TODO - scrappage discount must be accessible via API
 //Or provide estimate based on price/marque/type etc.
 $scrappagediscount = 2000;
-
-/*
-$hpform =<<<EOF
-<div id="$paraident" class="$ident marker">
-    <div class="quote $ident" >
-        <p>HP Quote Estimate<br />
-        <p><b><i>STEP 1.</i></b> Adjust inputs as necessary, monthly payments will update instantly.
-            For example if you think you can get a zero interest rate deal enter 0 in the Interest Rate field
-            or if your purchase price is different adjust the price field.</p>
-
-        <p>Price(£):  <input type="text" class="quoteinput price $paraident" value="$price_indicative" style="width: 100px; height: 1em"><br />
-        <p>Deposit(£): <input type="text" class="quoteinput deposit $paraident" value="$deposit" ><br />
-        <p>Scrappage/Trade In Discount(£): <input type="text" class="quoteinput scrappagedisc $paraident" value="$scrappagediscount" ><br />
-        <p>Amount to finance: <span class="quotedisplay financeamount $paraident">0</span><br />
-        <p>Number of monthly payments: <input type="text" class="quoteinput numpayments $paraident" value="48" ><br />
-        <p>Interest Rate(%): <input type="text" class="quoteinput interestrate $paraident" value="5.9"><br />
-        <p>Your Estimated Monthly Payment for this vehicle:&nbsp;<span style="color:green; font-weight:bold; font-size:xx-large" class="quotedisplay monthlypayment $paraident">0</span><br />
-        <p><b><i>STEP 2.</i></b> Get it financed at <a href="http://www.paidonresults.net/c/49722/1/1433/clc1" style="font-size:x-large">Car Loans Compare</a>
-        <p><b><i>STEP 3.</i></b>With your finance in place this now puts you in a strong position to shop around and negotiate further discounts with your dealer. Happy Motoring!
-    </div>
-</div>
-EOF;
-*/
-
 
 $hpform =<<<EOF
 <div id="$paraident" class="$ident marker quotegrid">

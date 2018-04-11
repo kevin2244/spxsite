@@ -57,9 +57,9 @@ EOF;
 
             $extractc = extract($car,EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel');
         }
-        $spxSiteIpAddr = $this->hosts['SPX_SITE_IP_ADDR'];
+        $link = $this->serverUrl($this->url('carmodel',['marque' => $marque, 'model' => $model, 'modelid' => $spxmodel_id]));
         $dispmodel =<<<EOF
-        <a href="http://$spxSiteIpAddr/marque/$marque/model/$model/id/$spxmodel_id/"> $spxmodel_Model $spxmodel_ModelDetail<br />  $spxmodel_Engine $spxmodel_Bodystyle</a>
+        <a href="$link"> $spxmodel_Model $spxmodel_ModelDetail<br />  $spxmodel_Engine $spxmodel_Bodystyle</a>
 EOF;
         $grid.=<<<EOF
         <div class="modelline">
