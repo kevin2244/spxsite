@@ -34,7 +34,8 @@ class CarModelHandler implements RequestHandlerInterface
         $idfilter = new Alnum();
         $modelid  = $idfilter->filter($request->getAttribute('modelid'));
 
-        $client   = new Client(['base_uri' => $this->hosts['SPX_IP_ADDR']]);
+        $spxUrl = $this->hosts['SPX_URL'];
+        $client = new Client(['base_uri' => $spxUrl]);
         $response = $client->request('GET', "model/modelid/$modelid");
 
         $data = [];

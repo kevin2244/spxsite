@@ -39,8 +39,8 @@ class CarModelsHandler implements RequestHandlerInterface
         $modelrq = $request->getAttribute('model');
         $model = $filter->filter($modelrq);
 
-        $spxIpAddr = $this->hosts['SPX_IP_ADDR'];
-        $client = new Client(['base_uri' => $spxIpAddr]);
+        $spxUrl = $this->hosts['SPX_URL'];
+        $client = new Client(['base_uri' => $spxUrl]);
         $response = $client->request('GET', "marque/$marque/model/$model");
 
         $data = [];
