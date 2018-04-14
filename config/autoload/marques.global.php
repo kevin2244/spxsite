@@ -17,6 +17,8 @@ return  [
         'mercedes'  => 'Mercedes-Benz',
         'mazda'     => 'Mazda',
         'fiat'      => 'Fiat',
-        'vauxhall'  => 'Vauxhall'
+        'vauxhall'  => 'Vauxhall',
+        'kia'       => 'Kia',
+        'hyundai'   => 'Hyundai'
     ]
 ];

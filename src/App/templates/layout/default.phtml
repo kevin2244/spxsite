@@ -52,9 +52,6 @@ $this->inlineScript()
                                 Scrappage Explained
                             </a>
                         </li>
-
-
-
                         <li class="nav-item">
                             <div class="dropdown show">
                                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,14 +59,12 @@ $this->inlineScript()
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'mercedes'])) ?>">Mercedes-Benz</a>
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'ford'])) ?>">Ford</a>
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'mazda'])) ?>">Mazda</a>
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'kia'])) ?>">Kia</a>
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('carmarques', ['marque' => 'toyota'])) ?>">Toyota</a>
+                                    <?= $this->MarqueList() ?>
                                 </div>
                             </div>
                         </li>
+
+
                         <li class="nav-item">
                             <a href="<?= $this->serverUrl('/sp/') ?>" class="nav-link">
                                 Blog
