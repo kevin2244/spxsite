@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-error_log('In Index...');
+setlocale(LC_ALL, 'en_GB.utf8');
 
 // Delegate static file requests back to the PHP built-in webserver
 if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {

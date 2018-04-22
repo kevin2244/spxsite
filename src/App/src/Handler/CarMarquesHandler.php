@@ -37,6 +37,7 @@ class CarMarquesHandler implements RequestHandlerInterface
         $marquemap = $this->marquemap;
         $marque = (!empty($marquemap[$marquerq])) ? $marquemap[$marquerq] :
             ucfirst($marquerq);
+
         $spxUrl = $this->hosts['SPX_URL'];
         $client = new Client(['base_uri' => $spxUrl]);
 

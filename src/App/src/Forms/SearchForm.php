@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Forms;
+use Zend\Form\Form;
+use Zend\Form\Element;
+use Zend\InputFilter\Input;
+use Zend\InputFilter\InputFilter;
+use Zend\Validator;
+
+class SearchForm extends Form
+{
+    /**
+     * SearchForm constructor.
+     *
+     * @param array $marquelist
+     */
+    public function __construct(array $marquelist = [])
+    {
+        parent::__construct();
+
+        $formmarquelist = [];
+
+        foreach($marquelist as $mkey => $mval) {
+
+            $formmarquelist[$mval] = $mval;
+        }
+
+        $this->add([
+            'name' => 'marque',
+            'options' => [
+                'label' => 'Marque',
+                'value_options' => $formmarquelist
+            ],
+            'type' => Element\Select::class,
+        ]);
+
+        $this->add([
+            'name' => 'text',
+            'type' => Element\Text::class,
+            'options' => [
+                'label' => '',
+            ],
+            'attributes' => [
+                'placeholder' => 'Search Text (optional)',
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'send',
+            'type'  => 'Submit',
+            'attributes' => [
+                'value' => 'Go',
+            ],
+        ]);
+
+        $inputFilter = new InputFilter();
+
+        $marqueInput = new Input('marque');
+        $marqueInput->getValidatorChain()
+                    ->attach(new Validator\NotEmpty())
+                    ->attach(new Validator\StringLength(['max' => 32]));
+
+        $textInput = new Input('text');
+        $textInput->setRequired(false);
+        $textInput->getValidatorChain()
+                  ->attach(new Validator\StringLength(['max' => 32]))
+                  ->attach(new \Zend\I18n\Validator\Alnum(true));
+
+        $inputFilter->add($marqueInput)
+            ->add($textInput);
+
+        $this->setInputFilter($inputFilter);
+    }
+}

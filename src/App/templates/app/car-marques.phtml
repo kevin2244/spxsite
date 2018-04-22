@@ -2,7 +2,7 @@
 <div>
     <h2><b><?= ucfirst($marque)?></b></h2>
     <?php
-    foreach(json_decode($this->modelresponse) as $model) {
+    foreach(json_decode($this->modelresponse, true) as $model) {
 
         $url = $this->serverUrl($this->url('carmodels',['marque' => $marque, 'model' => $model]));
         echo '<br />'.    '<a href="'.$url.'">'.$model.'</a>';

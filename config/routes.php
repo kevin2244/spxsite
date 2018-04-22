@@ -42,5 +42,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/marque/{marque:.*}/model/{model:.*}/id/{modelid:.*}', App\Handler\CarModelHandler::class, 'carmodel');
     $app->get('/marque/{marque:.*}/model/{model:.*}', App\Handler\CarModelsHandler::class, 'carmodels');
     $app->get('/marque/{marque:.*}', App\Handler\CarMarquesHandler::class, 'carmarques');
-
+    $app->post('/search', App\Handler\Search::class, 'search');
+    $app->get('/search', App\Handler\Search::class, 'search-post');
 };

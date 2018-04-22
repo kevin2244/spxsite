@@ -61,6 +61,13 @@ ins {
     font-size: 1.8em;
 }
 
+.searchcarheader {
+    margin: auto;
+    border: 0 solid black;
+    text-align: left;
+    font-size: 1.3em;
+}
+
 
 .modelline {
     grid-column: 1;

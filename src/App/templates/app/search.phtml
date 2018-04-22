@@ -1,0 +1,172 @@
+<?php
+$this->headTitle('Search');
+$this->form->prepare();
+$this->form->setAttribute('method', 'post');
+$this->form->setAttribute('class', 'form-inline');
+$sform = $this->form()->openTag($this->form);
+
+foreach ($this->form->getElements() as $name => $element) :
+
+    switch($element->getAttributes()['type']) {
+
+        case 'submit':
+            $element->setAttributes(['class' => 'btn btn-default']);
+            $sform .= $this->formElement($element);
+            break;
+
+        default:
+            $element->setAttributes(['class' => 'form-control']);
+            $sform
+                .= <<<EOF
+            <div class = "form-group">
+EOF;
+            if (!empty($element->getLabel())) {
+                $sform .= $this->formLabel($element);
+            }
+            $sform .= $this->formElement($element);
+            $sform .= '</div>';
+            break;
+    }
+    $sform .= '&nbsp;';
+endforeach;
+$sform .= $this->form()->closeTag($this->form);
+$disperrors = '';
+
+if (isset($this->messages)) {
+
+    foreach ($this->messages as $ekey => $eerrors) {
+        $disperror = '';
+        foreach ($eerrors as $validator => $verror) {
+            $disperror .= "$validator: $verror<br />";
+        }
+        $disperrors .= <<<EOF
+        $ekey : $disperror<br />
+EOF;
+
+    $disperrors =<<<EOF
+    <div style="border: 1px solid; border-color: crimson">$disperrors</div>
+EOF;
+    }
+}
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8"><?=$sform?></div>
+        <div class="col-lg-4"><?php echo "$disperrors" ?></div>
+    </div>
+</div>
+
+<?php
+
+if (empty($this->searchresult)) {return;}
+
+$res = json_decode($this->searchresult, true);
+$fields             = [];
+$excludes           = ['Marque'];
+$descriptionFields  = ['Model','ModelDetail','BodyStyle','Engine'];
+$dataline_1         = ['Fuel','Transmission','VED'];
+$colheaders         = [];
+$description        = '';
+
+if (!empty($res)) {
+    foreach ($res as $truck) {
+        $showfields = array_diff(array_keys($truck),$excludes);
+        $fields += array_diff($showfields, $fields);
+    }
+}
+
+$setmodel = '';
+$curmodel = '';
+
+foreach ($res as $truck) {
+
+    //extract vars...
+    $model = (!empty($truck['Model'])) ? $truck['Model'] : '';
+    $marque = (!empty($truck['Marque'])) ? $truck['Marque'] : '';
+
+
+    //TODO: MAKE INTO COMMON FUNCTION
+    $spxmodel_Bodystyle='';
+    $spxmodel_Model='';
+    $spxmodel_ModelDetail='';
+    $spxmodel_Fuel='';
+    $spxmodel_Transmission='';
+    $spxmodel_Engine='';
+    $spxmodel_dispprice =  '';
+
+    foreach ($fields as $field) {
+
+        //set all possible fields
+        //to avoid contamination
+        //from previous items in the loop
+        switch ($field) {
+
+            case '_id':
+                $spxmodel_id = $truck[$field]['$oid'];
+                break;
+
+            default:
+                $str = "spxmodel_$field";
+                $$str = 'N/A';
+                break;
+        }
+
+    }
+    $extractc = extract(
+        $truck, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel'
+    );
+
+    foreach ($truck as $field => $val) {
+
+        if (strpos($field, 'price_i') !== false) {
+            $pfield = 'spxmodel_'.$field;
+            $spxmodel_dispprice = money_format(
+                '%.2n', (float)$$pfield
+            );
+        }
+    }
+//END COMMON FUNCTION
+
+    $modelDetail = (!empty($truck['ModelDetail'])) ? $truck['ModelDetail']
+        : '';
+
+    if ($model != $setmodel) {
+        $curmodel = $model;
+        $setmodel = $model;
+    } else {
+        $curmodel = '';
+    }
+    ?>
+    <div class="container">
+
+        <?php if (!empty($curmodel)) : ?>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-11 searchcarheader">
+                <?php echo "$spxmodel_Marque $spxmodel_Model $spxmodel_ModelDetail" ?>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="row">
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+                <?= $modelDetail ?><br />
+
+            </div>
+            <div class="col-md-4">
+                <?= "$spxmodel_Engine $spxmodel_Bodystyle" ?>
+
+            </div>
+
+            <div class="col-md-4 price"><?php echo $spxmodel_dispprice; ?>
+            </div>
+
+        </div>
+    </div>
+
+<?php }
+

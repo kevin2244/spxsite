@@ -39,6 +39,7 @@ class ConfigProvider
         return [
             'invokables' => [
                 Handler\PingHandler::class => Handler\PingHandler::class,
+
             ],
             'factories'  => [
 
@@ -48,7 +49,9 @@ class ConfigProvider
                 Handler\CarModelsHandler::class  => Handler\CarModelsHandlerFactory::class,
                 Handler\AboutHandler::class => Handler\AboutHandlerFactory::class,
                 Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
-                Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class
+                Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
+                Forms\SearchForm::class => Forms\SearchFormFactory::class,
+                Model\SPXGuzzleClientFactory::class => Model\SPXGuzzleClientFactory::class,
             ],
         ];
     }
