@@ -14,6 +14,7 @@ return [
         'factories' => [
             App\Handler\HirePurchaseHP::class => App\Handler\HirePurchaseHPFactory::class,
             App\Handler\ScrappageSchemesExplainedHandler::class => App\Handler\ScrappageSchemesExplainedHandlerFactory::class,
+            App\Handler\Search::class => App\Handler\SearchFactory::class,
         ],
     ],
 ];
