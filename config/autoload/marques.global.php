@@ -20,5 +20,5 @@ return  [
         'vauxhall'  => 'Vauxhall',
         'kia'       => 'Kia',
         'hyundai'   => 'Hyundai'
-    ]
+    ],
 ];

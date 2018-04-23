@@ -195,3 +195,13 @@ body {
     border: 0 solid black;
     color: #999999;
 }
+
+.error {
+    border: 2px solid crimson;
+}
+
+.resultentry:hover {
+    background-color: #e6f1ff;
+    cursor: pointer;
+
+}

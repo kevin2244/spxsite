@@ -44,7 +44,7 @@ if (isset($this->messages)) {
 EOF;
 
     $disperrors =<<<EOF
-    <div style="border: 1px solid; border-color: crimson">$disperrors</div>
+    <div class="alert alert-danger">$disperrors</div>
 EOF;
     }
 }
@@ -79,11 +79,15 @@ if (!empty($res)) {
 $setmodel = '';
 $curmodel = '';
 
+$i = 0;
 foreach ($res as $truck) {
 
     //extract vars...
     $model = (!empty($truck['Model'])) ? $truck['Model'] : '';
     $marque = (!empty($truck['Marque'])) ? $truck['Marque'] : '';
+
+    $i++;
+    $rowactive = ($i == 1) ? 'active' : '';
 
 
     //TODO: MAKE INTO COMMON FUNCTION
@@ -119,6 +123,8 @@ foreach ($res as $truck) {
 
     foreach ($truck as $field => $val) {
 
+
+
         if (strpos($field, 'price_i') !== false) {
             $pfield = 'spxmodel_'.$field;
             $spxmodel_dispprice = money_format(
@@ -137,11 +143,19 @@ foreach ($res as $truck) {
     } else {
         $curmodel = '';
     }
+
+
+    //modellink
+    $modelLink = $this->serverUrl($this->url('carmodel',['marque' => $marque, 'model' => $model, 'modelid' => $spxmodel_id]));
+
+
+
+
     ?>
     <div class="container">
 
         <?php if (!empty($curmodel)) : ?>
-        <div class="row">
+        <div class="row <?=$rowactive?>" >
             <div class="col-md-1"></div>
             <div class="col-md-11 searchcarheader">
                 <?php echo "$spxmodel_Marque $spxmodel_Model $spxmodel_ModelDetail" ?>
@@ -149,7 +163,8 @@ foreach ($res as $truck) {
         </div>
         <?php endif; ?>
 
-        <div class="row">
+        <a href="<?=$modelLink?>">
+        <div class="row resultentry">
             <div class="col-md-2">
 
             </div>
@@ -164,8 +179,8 @@ foreach ($res as $truck) {
 
             <div class="col-md-4 price"><?php echo $spxmodel_dispprice; ?>
             </div>
-
         </div>
+        </a>
     </div>
 
 <?php }

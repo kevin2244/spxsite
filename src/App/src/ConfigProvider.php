@@ -39,7 +39,7 @@ class ConfigProvider
         return [
             'invokables' => [
                 Handler\PingHandler::class => Handler\PingHandler::class,
-
+                Model\MarqueList::class => Model\MarqueList::class
             ],
             'factories'  => [
 
