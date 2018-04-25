@@ -27,14 +27,17 @@ EOF;
     }
 
 
-    foreach ($cardata as $car) {
+    foreach ($cardata as $truck) {
 
+
+        //TODO: MAKE INTO COMMON FUNCTION
         $spxmodel_Bodystyle='';
         $spxmodel_Model='';
         $spxmodel_ModelDetail='';
         $spxmodel_Fuel='';
         $spxmodel_Transmission='';
         $spxmodel_Engine='';
+        $spxmodel_dispprice =  '';
 
         foreach ($fields as $field) {
 
@@ -44,7 +47,7 @@ EOF;
             switch ($field) {
 
                 case '_id':
-                    $spxmodel_id = $car[$field]['$oid'];
+                    $spxmodel_id = $truck[$field]['$oid'];
                     break;
 
                 default:
@@ -52,11 +55,27 @@ EOF;
                     $$str = 'N/A';
                     break;
             }
-            if (strpos($field, 'price_i') !== false  ) {$spxmodel_dispprice = money_format('%.2n', $car[$field]);}
 
-
-            $extractc = extract($car,EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel');
         }
+        $extractc = extract(
+            $truck, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel'
+        );
+
+        foreach ($truck as $field => $val) {
+
+
+
+            if (strpos($field, 'price_i') !== false) {
+                $pfield = 'spxmodel_'.$field;
+                $spxmodel_dispprice = money_format(
+                    '%.2n', (float)$$pfield
+                );
+            }
+        }
+//END COMMON FUNCTION
+
+
+
         $link = $this->serverUrl($this->url('carmodel',['marque' => $marque, 'model' => $model, 'modelid' => $spxmodel_id]));
         $dispmodel =<<<EOF
         <a href="$link"> $spxmodel_Model $spxmodel_ModelDetail<br />  $spxmodel_Engine $spxmodel_Bodystyle</a>

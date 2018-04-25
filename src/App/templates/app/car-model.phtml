@@ -46,7 +46,8 @@ foreach ($cardata as $field => $val) {
         </div>
 EOF;
 
-        if (strpos($field, 'price_i') !== false  ) {
+
+        if (strpos($field, 'price_i_') !== false  ) {
             $spxmodel_dispprice = money_format('%.2n', $val);
             $price_indicative = $val;
         }
