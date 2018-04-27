@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Middleware\RouteHelperMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\Handler\NotFoundHandler;
@@ -58,6 +59,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);
+
+    //Add custom RouteHelperMiddleware to provide matched route info in views
+    //This needs to be after route and before dispatch.
+    $app->pipe(RouteHelperMiddleware::class);
 
     // Add more middleware here that needs to introspect the routing results; this
     // might include:

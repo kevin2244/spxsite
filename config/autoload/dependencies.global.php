@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Middleware\RouteHelperMiddleware;
+use App\Middleware\RouterHelperMiddlewareFactory;
+use App\viewhelpers\RouteHelper;
+
 return [
     // Provides application-wide services.
     // We recommend using fully-qualified class names whenever possible as
@@ -17,10 +21,12 @@ return [
         // class name.
         'invokables' => [
             // Fully\Qualified\InterfaceName::class => Fully\Qualified\ClassName::class,
+            RouteHelper::class => RouteHelper::class
         ],
         // Use 'factories' for services provided by callbacks/factory classes.
         'factories'  => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
+            RouteHelperMiddleware::class => RouterHelperMiddlewareFactory::class
         ],
     ],
 ];
