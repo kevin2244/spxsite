@@ -1,4 +1,4 @@
-const dospdebug = true;
+const dospdebug = false;
 
 function spdebug(spmessage) {
     if (dospdebug) {
