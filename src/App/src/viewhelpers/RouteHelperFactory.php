@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace App\viewhelpers;
 
-use function error_log;
 use Psr\Container\ContainerInterface;
-error_log('In Route Helper Factory');
 
 class RouteHelperFactory
 {

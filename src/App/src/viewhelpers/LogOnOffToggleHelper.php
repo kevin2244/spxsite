@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * User: kevin
+ * Date: 03/05/2018
+ * Time: 08:41
+ */
+namespace App\viewhelpers;
+
+use Zend\Authentication\AuthenticationServiceInterface;
+
+
+class LogOnOffToggleHelper
+{
+    private $serverUrl;
+    private $url;
+    private $authenticationService;
+
+    public function __construct(
+        AuthenticationServiceInterface $authenticationService,
+        $serverUrl,
+        $url
+    ) {
+        $this->authenticationService = $authenticationService;
+        $this->serverUrl = $serverUrl;
+        $this->url = $url;
+    }
+
+    public function __invoke()
+    {
+        if ($this->authenticationService->hasIdentity()) {
+
+
+            $helper=$this->serverUrl;
+            $url=$this->url;
+            $logoff = $helper($url('log-off'));
+
+            $toggle =<<<EOF
+            <a href="$logoff" class="nav-link">
+            Log Off:
+            </a>
+EOF;
+        }
+        else {
+
+            $helper=$this->serverUrl;
+            $url=$this->url;
+            $logon = $helper($url('log-on'));
+
+            $toggle =<<<EOF
+            <a href="$logon" class="nav-link">
+            Log On
+            </a>
+EOF;
+        }
+        return $toggle;
+    }
+}

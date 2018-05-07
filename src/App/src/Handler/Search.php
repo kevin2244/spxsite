@@ -59,6 +59,9 @@ class Search implements RequestHandlerInterface
         $data['form'] = $this->form;
         $data['searchresult'] = $searchresult;
 
+
+
+
         // Render and return a response:
         return new HtmlResponse($this->renderer->render(
             'app::search',

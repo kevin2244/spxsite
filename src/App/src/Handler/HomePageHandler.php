@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Router;
 use Zend\Expressive\Template;
-use function error_log;
-
-error_log('HP Handler...');
 
 class HomePageHandler implements RequestHandlerInterface
 {
@@ -34,6 +32,10 @@ class HomePageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        return new HtmlResponse($this->template->render('app::home-page'));
+        $data = [];
+
+        //check Ident
+        $data['ident'] = $request->getAttribute(AuthMiddleware::class);
+        return new HtmlResponse($this->template->render('app::home-page', $data));
     }
 }

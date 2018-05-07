@@ -33,9 +33,9 @@ use Zend\Expressive\MiddlewareFactory;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    $app->get('/', App\Handler\HomePageHandler::class, 'home');
+    $app->get('/', [ App\Handler\HomePageHandler::class], 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
-    $app->get('/about', App\Handler\AboutHandler::class, 'about');
+    $app->get('/about', [App\Handler\AboutHandler::class], 'about');
     $app->get('/car-finance', App\Handler\CarFinanceHandler::class, 'car-finance');
     $app->get('/hire-purchase-hp', App\Handler\HirePurchaseHP::class, 'hire-purchase-hp');
     $app->get('/scrappage-schemes-explained', App\Handler\ScrappageSchemesExplainedHandler::class, 'scrappage-schemes-explained');
@@ -44,4 +44,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/marque/{marque:.*}', App\Handler\CarMarquesHandler::class, 'carmarques');
     $app->post('/search', App\Handler\Search::class, 'search');
     $app->get('/search', App\Handler\Search::class, 'search-post');
+    $app->get('/logon', App\Handler\LogonHandler::class,'log-on');
+    $app->post('/logon', App\Handler\LogonHandler::class, 'log-on-post');
+    $app->get('/logoff', App\Handler\LogOffHandler::class, 'log-off');
 };

@@ -60,16 +60,18 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);
 
-    //Add custom RouteHelperMiddleware to provide matched route info in views
-    //This needs to be after route and before dispatch.
-    $app->pipe(RouteHelperMiddleware::class);
-
     // Add more middleware here that needs to introspect the routing results; this
     // might include:
     //
     // - route-based authentication
     // - route-based validation
     // - etc.
+
+    //Add custom RouteHelperMiddleware to provide matched route info in views
+    //This needs to be after route and before dispatch.
+    $app->pipe(RouteHelperMiddleware::class);
+
+
 
     // Register the dispatch middleware in the middleware pipeline
     $app->pipe(DispatchMiddleware::class);

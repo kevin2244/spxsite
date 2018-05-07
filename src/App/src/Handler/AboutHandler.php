@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -30,6 +31,7 @@ class AboutHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
+        $data['ident'] = $request->getAttribute(AuthMiddleware::class);
         return new HtmlResponse($this->template->render('app::about'));
     }
 }

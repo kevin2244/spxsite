@@ -1,0 +1,82 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: kevin
+ * Date: 01/05/2018
+ * Time: 23:52
+ */
+
+$this->headTitle('Log On');
+
+$this->form->prepare();
+
+$this->form->setAttribute('method', 'post');
+$this->form->setAttribute('class', 'form-inline');
+$lform = $this->form()->openTag($this->form);
+
+foreach ($this->form->getElements() as $name => $element) :
+
+    switch($element->getAttributes()['type']) {
+
+        case 'submit':
+            $element->setAttributes(['class' => 'btn btn-default']);
+            $lform .= $this->formElement($element);
+            break;
+
+        default:
+            $element->setAttributes(['class' => 'form-control']);
+            $lform
+                .= <<<EOF
+            <div class = "form-group">
+EOF;
+            if (!empty($element->getLabel())) {
+                $lform .= $this->formLabel($element);
+            }
+            $lform .= $this->formElement($element);
+            $lform .= '</div>';
+            break;
+    }
+    $lform .= '&nbsp;';
+endforeach;
+$lform .= $this->form()->closeTag($this->form);
+$disperrors = '';
+
+if (isset($this->messages)) {
+
+    foreach ($this->messages as $ekey => $eerrors) {
+        $disperror = '';
+        foreach ($eerrors as $validator => $verror) {
+            $disperror .= "$validator: $verror<br />";
+        }
+        $disperrors
+            .= <<<EOF
+        FORM: $ekey : $disperror<br />
+EOF;
+    }
+
+    foreach ($this->authresult as $akey => $aerror) {
+        switch ($akey) {
+            case 'isValid':
+                break;
+
+            default:
+                $disperrors.= <<<EOF
+                Authentication: $akey : $aerror<br />
+EOF;
+        }
+    }
+
+    if (!empty($disperrors)) {
+            $dispe =<<<EOF
+            <div class="alert alert-danger">$disperrors</div>
+EOF;
+    }
+}
+?>
+<h2>Log On</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8"><?=$lform?></div>
+        <div class="col-lg-4"><?php if (!empty($dispe)) {echo $dispe;} ?></div>
+    </div>
+</div>

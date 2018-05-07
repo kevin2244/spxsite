@@ -8,7 +8,6 @@
 
 namespace App\viewhelpers;
 
-use function error_log;
 use Zend\Expressive\Router\RouteResult;
 
 class RouteHelper
@@ -23,7 +22,6 @@ class RouteHelper
 
     public function setRouteResult(RouteResult $routeResult)
     {
-        error_log('Setting Route Result...');
         $this->routeResult = $routeResult;
     }
 }

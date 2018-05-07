@@ -11,7 +11,6 @@ use Zend\Expressive\Router\RouteResult;
 
 
 /**
- * Created by PhpStorm.
  * User: kevin
  * Date: 27/04/2018
  * Time: 02:34
@@ -32,8 +31,6 @@ class RouteHelperMiddleware implements MiddlewareInterface
         $result = $request->getAttribute(RouteResult::class);
 
         if ($result instanceof RouteResult) {
-
-            error_log('Got RouteResult');
             $this->routeHelper->setRouteResult($result);
         }
 

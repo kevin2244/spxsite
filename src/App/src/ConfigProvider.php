@@ -3,10 +3,7 @@
 declare(strict_types=1);
 
 namespace App;
-use function error_log;
-
-
-error_log('In Config Provider...');
+use Zend\Authentication\AuthenticationService;
 
 /**
  * The configuration provider for the App module
@@ -35,11 +32,11 @@ class ConfigProvider
      */
     public function getDependencies() : array
     {
-        error_log('Returning Dependencies');
         return [
             'invokables' => [
                 Handler\PingHandler::class => Handler\PingHandler::class,
-                Model\MarqueList::class => Model\MarqueList::class
+                Model\MarqueList::class => Model\MarqueList::class,
+                Forms\LogonForm::class => Forms\LogonForm::class,
             ],
             'factories'  => [
 
@@ -52,6 +49,10 @@ class ConfigProvider
                 Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
                 Forms\SearchForm::class => Forms\SearchFormFactory::class,
                 Model\SPXGuzzleClientFactory::class => Model\SPXGuzzleClientFactory::class,
+                Auth\AuthAdapter::class => Auth\AuthAdapterFactory::class,
+                AuthenticationService::class => Auth\AuthenticationServiceFactory::class,
+                Middleware\AuthMiddleware::class => Middleware\AuthMiddlewareFactory::class,
+                Handler\LogOffHandler::class => Handler\LogOffHandlerFactory::class
             ],
         ];
     }
