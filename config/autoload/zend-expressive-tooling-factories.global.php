@@ -13,6 +13,7 @@ return [
     'dependencies' => [
         'factories' => [
             App\Handler\HirePurchaseHP::class => App\Handler\HirePurchaseHPFactory::class,
+            App\Handler\LogonHandler::class => App\Handler\LogonHandlerFactory::class,
             App\Handler\ScrappageSchemesExplainedHandler::class => App\Handler\ScrappageSchemesExplainedHandlerFactory::class,
             App\Handler\Search::class => App\Handler\SearchFactory::class,
         ],
