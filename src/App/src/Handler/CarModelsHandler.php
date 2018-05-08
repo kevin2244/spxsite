@@ -4,49 +4,101 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use GuzzleHttp\Client;
+use GuzzleHttp;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Escaper\Escaper;
 use Zend\Expressive\Template;
-use Zend\Filter\PregReplace;
+use Zend\Validator\Regex;
+use Zend\Validator\ValidatorChain;
 
 class CarModelsHandler implements RequestHandlerInterface
 {
     private $template;
     private $marquemap;
-    private $hosts;
+    private  $spxClient;
 
     public function __construct(
         Template\TemplateRendererInterface $template = null,
         $marquemap = [],
-        $hosts = []
+        GuzzleHttp\ClientInterface $spxClient
     ) {
         $this->template  = $template;
         $this->marquemap = $marquemap;
-        $this->hosts = $hosts;
+        $this->spxClient = $spxClient;
     }
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $filter = new PregReplace(['pattern' => '/[^[:alnum:]-]/u']);
-        $marquerq = $filter->filter($request->getAttribute('marque'));
-        $marquemap = $this->marquemap;
-        $marque = (!empty($marquemap[$marquerq])) ? $marquemap[$marquerq] :
-            ucfirst($marquerq);
+        $marquerq = $request->getAttribute('marque');
+        $inputMarqueValidatorChain = new ValidatorChain();
+        $inputMarqueValidatorChain->attach(
+            new Regex(['pattern' => '/^[[:alnum:]-]+$/u'])
+        );
+
+        if (!$inputMarqueValidatorChain->isValid($marquerq)) {
+            return new HtmlResponse($this->template->render('error::404'), 404);
+        }
+
+        $marqueNameMap = array_flip($this->marquemap);
+
+        if (!empty($marqueNameMap[$marquerq])) {
+
+            $marqueKeyName = $marqueNameMap[$marquerq];
+            $marqueName = $marquerq;
+        } else {
+
+            return new HtmlResponse($this->template->render('error::404'), 404);
+        }
 
         $modelrq = $request->getAttribute('model');
-        $model = $filter->filter($modelrq);
 
-        $spxUrl = $this->hosts['SPX_URL'];
-        $client = new Client(['base_uri' => $spxUrl]);
-        $response = $client->request('GET', "marque/$marque/model/$model");
+        //TODO - need defined rules for model name,
+        //in this application and/or the SPXAPI
+        //Allow non alnum characters such as exclamation marks e.g. VW Up!
+        //or Cee'd
+        $runModelValidation = false;
+        if ($runModelValidation) {
 
-        $data = [];
-        $data['marque'] = $marque;
+            $inputModelValidatorChain = new ValidatorChain();
+            $inputModelValidatorChain->attach(
+                new Regex(['pattern' => '/^[[:alnum:]-]+$/u'])
+            );
+            if (!$inputModelValidatorChain->isValid($modelrq)) {
+
+                return new HtmlResponse($this->template->render('error::404'), 404);
+            }
+        }
+
+        $modelrq = $request->getAttribute('model');
+        $model = $modelrq;
+
+        //Since we currently do not check if user submitted Model param exists
+        //as an entity,
+        //and do not necessarily filter it,
+        //escape it for output
+        $escaper    = new Escaper();
+        $modelUrl   = $escaper->escapeUrl($model);
+        $modelHtml  = $escaper->escapeHtml($model);
+
+        $response   = $this->spxClient->request('GET', "marque/$marqueKeyName/model/$model");
+        $data       = [];
+        $cardata    = json_decode($response->getBody()->getContents(), true);
+
+        if (empty($cardata)) {
+            return new HtmlResponse($this->template->render('error::404'), 404);
+        }
+        else {
+            $data['cardata'] = $cardata;
+        }
+
+        $data['marquekeyname'] = $marqueKeyName;
+        $data['marquename'] = $marqueName;
         $data['model'] = $model;
-        $data['modelresponse'] = $response->getBody();
+        $data['modelhtml'] = $modelHtml;
+        $data['modelurl'] = $modelUrl;
 
         return new HtmlResponse($this->template->render('app::car-models', $data));
     }

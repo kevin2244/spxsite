@@ -1,111 +1,132 @@
 <div>
     <?php
     $url = $this->url;
-    $marque = $this->marque;
+    $marque = $this->marquename;
     $model = $this->model;
+    $modelUrl = $this->modelurl;
+    $modelHtml = $this->modelhtml;
+    $marqueUrl = $this->serverUrl($this->url('carmarques',['marque' => $this->marquekeyname]));
+    $this->headTitle( $marque .' '.$this->modelhtml);
+    $marqueLink =<<<EOF
+    <a href="$marqueUrl">$marque</a>
+EOF;
+
     $grid=<<<EOF
     <div class="modelgrid">
     <div class="modelheader">
-    $marque $model
+    $marqueLink $modelHtml
     </div>
 EOF;
 
-    $this->headTitle( $marque .' '.$model );
-    $cardata = json_decode($this->modelresponse, true);
+    $cardata = $this->cardata;
+
+    if (!empty($cardata)) {
+
+        $fields = [];
+        $excludes = ['Marque'];
+        $descriptionFields = ['Model', 'ModelDetail', 'BodyStyle', 'Engine'];
+        $dataline_1 = ['Fuel', 'Transmission', 'VED'];
+        $colheaders = [];
+        $description = '';
 
 
-    $fields = [];
-    $excludes = ['Marque'];
-    $descriptionFields = ['Model','ModelDetail','BodyStyle','Engine'];
-    $dataline_1 = ['Fuel','Transmission','VED'];
-    $colheaders = [];
-    $description = '';
-
-    foreach ($cardata as $truck) {
-        $showfields = array_diff(array_keys($truck),$excludes);
-        $fields += array_diff($showfields, $fields);
-    }
-
-
-    foreach ($cardata as $truck) {
-
-
-        //TODO: MAKE INTO COMMON FUNCTION
-        $spxmodel_Bodystyle='';
-        $spxmodel_Model='';
-        $spxmodel_ModelDetail='';
-        $spxmodel_Fuel='';
-        $spxmodel_Transmission='';
-        $spxmodel_Engine='';
-        $spxmodel_dispprice =  '';
-
-        foreach ($fields as $field) {
-
-            //set all possible fields
-            //to avoid contamination
-            //from previous items in the loop
-            switch ($field) {
-
-                case '_id':
-                    $spxmodel_id = $truck[$field]['$oid'];
-                    break;
-
-                default:
-                    $str = "spxmodel_$field";
-                    $$str = 'N/A';
-                    break;
-            }
-
+        foreach ($cardata as $truck) {
+            $showfields = array_diff(array_keys($truck), $excludes);
+            $fields += array_diff($showfields, $fields);
         }
-        $extractc = extract(
-            $truck, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel'
-        );
-
-        foreach ($truck as $field => $val) {
 
 
+        foreach ($cardata as $truck) {
 
-            if (strpos($field, 'price_i') !== false) {
-                $pfield = 'spxmodel_'.$field;
-                $spxmodel_dispprice = money_format(
-                    '%.2n', (float)$$pfield
-                );
+
+            //TODO: MAKE INTO COMMON FUNCTION
+            $spxmodel_Bodystyle = '';
+            $spxmodel_Model = '';
+            $spxmodel_ModelDetail = '';
+            $spxmodel_Fuel = '';
+            $spxmodel_Transmission = '';
+            $spxmodel_Engine = '';
+            $spxmodel_dispprice = '';
+
+            foreach ($fields as $field) {
+
+                //set all possible fields
+                //to avoid contamination
+                //from previous items in the loop
+                switch ($field) {
+
+                    case '_id':
+                        $spxmodel_id = $truck[$field]['$oid'];
+                        break;
+
+                    default:
+                        $str = "spxmodel_$field";
+                        $$str = 'N/A';
+                        break;
+                }
+
             }
-        }
+            $extractc = extract(
+                $truck, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel'
+            );
+
+            foreach ($truck as $field => $val) {
+
+
+                if (strpos($field, 'price_i') !== false) {
+                    $pfield = 'spxmodel_' . $field;
+                    $spxmodel_dispprice = money_format(
+                        '%.2n', (float)$$pfield
+                    );
+                }
+            }
 //END COMMON FUNCTION
 
 
-
-        $link = $this->serverUrl($this->url('carmodel',['marque' => $marque, 'model' => $model, 'modelid' => $spxmodel_id]));
-        $dispmodel =<<<EOF
+            $link = $this->serverUrl(
+                $this->url(
+                    'carmodel', ['marque' => $marque, 'model' => $this->modelurl,
+                                 'modelid' => $spxmodel_id]
+                )
+            );
+            $dispmodel
+                = <<<EOF
         <a href="$link"> $spxmodel_Model $spxmodel_ModelDetail<br />  $spxmodel_Engine $spxmodel_Bodystyle</a>
 EOF;
-        $grid.=<<<EOF
+            $grid
+                .= <<<EOF
         <div class="modelline">
         $dispmodel
         </div>
 EOF;
 
-        $dataline_1spx = "$spxmodel_Fuel $spxmodel_Transmission";
+            $dataline_1spx = "$spxmodel_Fuel $spxmodel_Transmission";
 
-        $grid.=<<<EOF
+            $grid
+                .= <<<EOF
         <div class="modeldataline_1">
         $dataline_1spx
         </div>
 EOF;
 
-        $dataline_3spx = "$spxmodel_dispprice";
-        $grid.=<<<EOF
+            $dataline_3spx = "$spxmodel_dispprice";
+            $grid
+                .= <<<EOF
         <div class="modeldataline_3">
         <span class="price">$dataline_3spx</span>
         </div>
 EOF;
-    }
+        }
 
-    $grid.=<<<EOF
+        $grid
+            .= <<<EOF
 </div>
 EOF;
 
-    echo $grid;
+        echo $grid;
+    }
+    else {
+        echo "Not found";
+    }
 ?>
 </div>

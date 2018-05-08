@@ -1,10 +1,10 @@
-<?php $this->headTitle('Car Marques &#8211; Scrappage'); ?>
+<?php $this->headTitle($this->marque); ?>
 <div>
-    <h2><b><?= ucfirst($marque)?></b></h2>
+    <h2><b><?= $this->marque?></b></h2>
     <?php
-    foreach(json_decode($this->modelresponse, true) as $model) {
+    foreach($this->marquedata as $model) {
 
-        $url = $this->serverUrl($this->url('carmodels',['marque' => $marque, 'model' => $model]));
+        $url = $this->serverUrl($this->url('carmodels',['marque' => $this->marque, 'model' => $model]));
         echo '<br />'.    '<a href="'.$url.'">'.$model.'</a>';
     }
     ?>

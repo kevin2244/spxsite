@@ -1,31 +1,44 @@
 <?php
+$modeldata              = $this->modeldata;
+$spxmodel_Model         = '';
+$spxmodel_Marque        = '';
+$spxmodel_ModelDetail   = '';
 
-$cardata = json_decode($this->modelresponse, true);
+$extractc = extract($modeldata,EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel');
 
-$spxmodel_Model = '';
-$spxmodel_Marque = '';
-$spxmodel_ModelDetail = '';
-$extractc = extract($cardata,EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxmodel');
-?>
+$marqueKeyName  = array_flip($this->marquemap)[$spxmodel_Marque];
+$marqueUrl      = $this->serverUrl($this->url('carmarques',['marque' => $marqueKeyName]));
+$marqueLink     =<<<EOF
+    <a href="$marqueUrl">$spxmodel_Marque</a>
+EOF;
 
-<?php
+$carmodelsUrl = $this->serverurl(
+    $this->url(
+        'carmodels',
+        [
+            'marque' => $spxmodel_Marque,
+            'model' => $spxmodel_Model
+        ]
+    )
+);
+
+$modelLink=<<<EOF
+<a href="$carmodelsUrl">$spxmodel_Model</a>
+EOF;
+
 //TODO - should be Marque Model Submodel(consisting of various fields depending
 //on distinguishing fields availability e.g. engine, submodel, transmission)
  $this->headTitle("$spxmodel_Marque $spxmodel_Model $spxmodel_ModelDetail");
- ?>
 
-<?php
 $headerline =<<<EOF
-<div class="carheader">$spxmodel_Marque $spxmodel_Model $spxmodel_ModelDetail</div>
+<div class="carheader">$marqueLink $modelLink $spxmodel_ModelDetail</div>
 EOF;
 
-$excludes = ['Marque','Model'];
+$excludes           = ['Marque','Model'];
+$cardatalines       = '';
+$price_indicative   = 0;
 
-$cardatalines = '';
-
-$price_indicative = 0;
-
-foreach ($cardata as $field => $val) {
+foreach ($modeldata as $field => $val) {
 
     switch($field) {
 
@@ -46,7 +59,6 @@ foreach ($cardata as $field => $val) {
         </div>
 EOF;
 
-
         if (strpos($field, 'price_i_') !== false  ) {
             $spxmodel_dispprice = money_format('%.2n', $val);
             $price_indicative = $val;
@@ -61,16 +73,12 @@ $cargrid =<<<EOF
 EOF;
 
     $cargrid .= $headerline;
-
     $cargrid .= $cardatalines;
-
     $cargrid .=<<<EOF
 </div>
 EOF;
 
-
-
-$ident = 'thiscar';
+    $ident = 'thiscar';
 $paraident = 'par-'.$ident;
 $priceident = 'price-'.$ident;
 $scrappageident = 'scrappage-'.$ident;
@@ -135,7 +143,4 @@ $cont=<<<EOF
 EOF;
 
 echo $cont;
-
-
-?>
 
