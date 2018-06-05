@@ -304,13 +304,13 @@ class RegistrationForm extends Form
         $addressFirstLineFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['max' => 64]))
-            ->attach(new Validator\Regex(['pattern' => '/^[a-z ,.\'-]+$/i']));
+            ->attach(new Validator\Regex(['pattern' => '/^[a-z0-9 ,.\'-]+$/i']));
 
         $postTownFilter = new Input('post_town');
         $postTownFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['max' => 64]))
-            ->attach(new Validator\Regex(['pattern' =>'/^[a-z ,.\'-]+$/i']));
+            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'-]+$/i']));
 
         $countyFilter = new Input('county');
         $countyFilter->getValidatorChain()
