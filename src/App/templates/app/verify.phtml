@@ -1,0 +1,16 @@
+<?php $this->headTitle('Verify'); ?>
+<h2 class="entry-title">Verify</h2>
+
+
+<div class="entry-content">
+    <?php
+        if ($this->verified == 'Verified')
+        {
+            $logOnLink = $this->serverUrl($this->url('log-on'));
+            echo "Account Verified, you may <a href=\"$logOnLink\">Log On</a>";
+        }
+        else {
+            echo $this->verified;
+        }
+    ?>
+</div>

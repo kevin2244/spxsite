@@ -47,4 +47,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/logon', App\Handler\LogonHandler::class,'log-on');
     $app->post('/logon', App\Handler\LogonHandler::class, 'log-on-post');
     $app->get('/logoff', App\Handler\LogOffHandler::class, 'log-off');
+    $app->get('/register', App\Handler\RegistrationHandler::class, 'registration');
+    $app->post('/register', App\Handler\RegistrationHandler::class, 'registration-post');
+    $app->get('/verify/{token:.*}', App\Handler\VerifyHandler::class,'verify');
 };

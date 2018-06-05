@@ -37,6 +37,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
                 Model\MarqueList::class => Model\MarqueList::class,
                 Forms\LogonForm::class => Forms\LogonForm::class,
+                Library\csprng::class => Library\csprng::class
             ],
             'factories'  => [
 
@@ -47,7 +48,9 @@ class ConfigProvider
                 Handler\AboutHandler::class => Handler\AboutHandlerFactory::class,
                 Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
                 Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
+                Handler\RegistrationHandler::class => Handler\RegistrationHandlerFactory::class,
                 Forms\SearchForm::class => Forms\SearchFormFactory::class,
+                Forms\RegistrationForm::class => Forms\RegistrationFormFactory::class,
                 Model\SPXGuzzleClientFactory::class => Model\SPXGuzzleClientFactory::class,
                 Auth\AuthAdapter::class => Auth\AuthAdapterFactory::class,
                 AuthenticationService::class => Auth\AuthenticationServiceFactory::class,

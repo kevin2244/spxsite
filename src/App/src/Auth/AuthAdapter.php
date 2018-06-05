@@ -48,14 +48,21 @@ class AuthAdapter implements AdapterInterface
         // If you do something like this, always store the passwords using the
         // PHP password_hash() function!
 
-
         $auth = $this->getAuth();
-        if (!empty($auth)) {
+        $ret = new Result(Result::FAILURE_CREDENTIAL_INVALID, $this->username);;
+
+        if (!isset($auth['verified'])) {
+            return $ret;
+        }
+        if ($auth['verified'] !== true) {
+            return $ret;
+        }
+        if (!empty($auth['password'])) {
             if (password_verify($this->password, $auth['password'])) {
-                return new Result(Result::SUCCESS, $auth);
+                $ret = new Result(Result::SUCCESS, $auth);
             }
         }
-        return new Result(Result::FAILURE_CREDENTIAL_INVALID, $this->username);
+        return $ret;
     }
 
     private function getAuth()

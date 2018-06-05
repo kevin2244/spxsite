@@ -16,6 +16,7 @@ return [
             App\Handler\LogonHandler::class => App\Handler\LogonHandlerFactory::class,
             App\Handler\ScrappageSchemesExplainedHandler::class => App\Handler\ScrappageSchemesExplainedHandlerFactory::class,
             App\Handler\Search::class => App\Handler\SearchFactory::class,
+            App\Handler\VerifyHandler::class => App\Handler\VerifyHandlerFactory::class,
         ],
     ],
 ];
