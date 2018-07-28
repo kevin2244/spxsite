@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use Exception;
-use function gettype;
-use function json_decode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -28,19 +26,22 @@ class RegistrationHandler implements RequestHandlerInterface
     private $spxClient;
     private $urlHelper;
     private $serverUrlHelper;
+    private $mailgunConfig;
 
     public function __construct(
         TemplateRendererInterface $renderer,
         FormInterface $form,
         GuzzleHttp\ClientInterface $spxClient,
         ServerUrlHelper $serverUrlHelper,
-        UrlHelper $urlHelper
+        UrlHelper $urlHelper,
+        $mailgunConfig
     ) {
         $this->renderer = $renderer;
         $this->form = $form;
         $this->spxClient = $spxClient;
         $this->serverUrlHelper = $serverUrlHelper;
         $this->urlHelper = $urlHelper;
+        $this->mailgunConfig = $mailgunConfig;
     }
 
     /**
@@ -148,8 +149,10 @@ class RegistrationHandler implements RequestHandlerInterface
                     //Send verification request to the User
                     $data['user_add_success'] = true;
 
-                    # First, instantiate the SDK with your API credentials
-                    $mg = Mailgun::create('key-3c37f4cd8bd45e52650d327cd3f2f54e');
+                    //Instantiate the Mailgun SDK with API credentials
+
+                    $mg = Mailgun::create($this->mailgunConfig['mailgun_api_key']);
+
                     $serverUrlHelper = $this->serverUrlHelper;
                     $urlHelper = $this->urlHelper;
                     $link = $serverUrlHelper($urlHelper('verify',['token' => $token]));
@@ -161,8 +164,8 @@ EOF;
 
                     # Now, compose and send your message.
                     # $mg->messages()->send($domain, $params);
-                    $mg->messages()->send('mg.scrappage.co.uk', [
-                        'from'    => 'donotreply@mg.scrappage.co.uk',
+                    $mg->messages()->send($this->mailgunConfig['domain'], [
+                        'from'    => $this->mailgunConfig['from'],
                         'to'      => $newUserData['person']['email'],
                         'subject' => 'Scrappage Registration',
                         'text'    => $messageText,

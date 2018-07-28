@@ -20,7 +20,8 @@ class RegistrationHandlerFactory
             $container->get(RegistrationForm::class),
             $container->get(SPXGuzzleClientFactory::class),
             $container->get(ServerUrlHelper::class),
-            $container->get(UrlHelper::class)
+            $container->get(UrlHelper::class),
+            $container->get('config')['mailgun']
         );
     }
 }
