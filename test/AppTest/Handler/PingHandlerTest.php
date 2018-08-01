@@ -8,9 +8,14 @@ use App\Handler\PingHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
+use  Helmich\Psr7Assert\Psr7Assertions;
+
 
 class PingHandlerTest extends TestCase
 {
+
+    use Psr7Assertions;
+
     public function testResponse()
     {
         $pingHandler = new PingHandler();
@@ -22,5 +27,16 @@ class PingHandlerTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertTrue(isset($json->ack));
+    }
+
+    public function testResponse2()
+    {
+        $pingHandler = new PingHandler();
+        $response = $pingHandler->handle(
+            $this->prophesize(ServerRequestInterface::class)->reveal()
+        );
+
+        $this->assertResponseHasStatus($response, 200);
+
     }
 }
