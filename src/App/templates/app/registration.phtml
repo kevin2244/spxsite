@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 $this->headTitle('Registration');
 
 if (isset($this->form)) {
@@ -8,6 +9,7 @@ if (isset($this->form)) {
 
     $displayForm = $this->form()->openTag($this->form);
 
+    /** @var \Zend\Form\Element $element */
     foreach ($this->form->getElements() as $name => $element) :
 
         if (!empty($element->getAttributes()['type'])) {

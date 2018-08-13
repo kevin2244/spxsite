@@ -5,6 +5,7 @@
  * Date: 05/04/2018
  * Time: 11:18
  */
+declare(strict_types=1);
 
 return  [
     'marques' => [

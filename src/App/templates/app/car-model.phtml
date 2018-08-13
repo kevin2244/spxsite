@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 $modeldata              = $this->modeldata;
 $spxmodel_Model         = '';
 $spxmodel_Marque        = '';
@@ -59,7 +60,12 @@ foreach ($modeldata as $field => $val) {
         </div>
 EOF;
 
+
+
+
+
         if (strpos($field, 'price_i_') !== false  ) {
+            $val = (float) $val;
             $spxmodel_dispprice = money_format('%.2n', $val);
             $price_indicative = $val;
         }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: kevin
@@ -10,6 +11,7 @@ namespace App\Middleware;
 
 use App\viewhelpers\RouteHelper;
 use Psr\Container\ContainerInterface;
+use Zend\Expressive\Helper\Exception;
 
 class RouterHelperMiddlewareFactory
 {

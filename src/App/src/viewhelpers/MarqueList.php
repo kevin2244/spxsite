@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\viewhelpers;
 
@@ -35,7 +36,7 @@ class MarqueList extends AbstractHelper
 
         if (empty($noresponse)) {
 
-            $marqueListData = json_decode($response->getBody(), true);
+            $marqueListData = json_decode($response->getBody()->getContents(), true);
             foreach ($marqueListData as $marque => $data) {
                 if (!array_key_exists($marque, $lookupmarques)) {
                     continue;

@@ -45,6 +45,7 @@ class CarMarquesHandler implements RequestHandlerInterface
         $marquemap = $this->marquemap;
 
         if (!empty($marquemap[$marquerq])) {
+
             $marque = $marquemap[$marquerq];
         }
         else {
@@ -54,7 +55,25 @@ class CarMarquesHandler implements RequestHandlerInterface
         try {
             $response = $this->spxClient->request('GET', "models/$marque");
         } catch (GuzzleException $e) {
-            //TODO Log Error
+            error_log(' Handler Exception: '.$e->getMessage().gettype($e));
+            if ($e instanceof GuzzleHttp\Exception || $e instanceof  GuzzleHttp\Exception\RequestException) {
+                // get the full text of the exception (including stack trace),
+                // and replace the original message (possibly truncated),
+                // with the full text of the entire response body.
+                if(!empty($e->getResponse())) {
+                    $message = str_replace(
+                        rtrim($e->getMessage()),
+                        (string)$e->getResponse()->getBody(),
+                        (string)$e
+                    );
+                }
+                else {$message = $e->getMessage();}
+                // log your new custom guzzle error message
+                error_log('Guzzle Exception: '.$message);
+            }
+            else {
+                error_log('Exception: '.$e->getMessage().$e->getFile().$e->getLine());
+            }
         }
 
         $data               = [];
@@ -63,4 +82,7 @@ class CarMarquesHandler implements RequestHandlerInterface
 
         return new HtmlResponse($this->template->render('app::car-marques', $data));
     }
+
+
+
 }

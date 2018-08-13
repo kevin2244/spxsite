@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace AppTest\Auth;
 
 use App\Auth\AuthAdapter;
