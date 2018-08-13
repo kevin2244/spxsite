@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use GuzzleHttp;
+use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
+use Zend\I18n;
 
 class VerifyHandler implements RequestHandlerInterface
 {
@@ -20,7 +23,7 @@ class VerifyHandler implements RequestHandlerInterface
 
     public function __construct(
         TemplateRendererInterface $renderer,
-        \GuzzleHttp\ClientInterface $spxClient
+        ClientInterface $spxClient
     ) {
         $this->renderer = $renderer;
         $this->spxClient = $spxClient;
@@ -34,15 +37,15 @@ class VerifyHandler implements RequestHandlerInterface
 
         //filter input
         $requestToken = $request->getAttribute('token');
-        $sfilter = new \Zend\I18n\Filter\Alnum();
+        $sfilter = new I18n\Filter\Alnum();
         $token = $sfilter->filter($requestToken);
 
         //verify token
         try {
             $response = $this->spxClient->request('GET', "/verifyuser/$token");
-        } catch (\GuzzleHttp\Exception\ServerException $e) {
+        } catch (GuzzleHttp\Exception\ServerException $e) {
 
-            if ($e instanceof \GuzzleHttp\Exception || $e instanceof  \GuzzleHttp\Exception\ServerException || $e instanceof \GuzzleHttp\Exception\ServerException) {
+            if ($e instanceof GuzzleHttp\Exception || $e instanceof  \GuzzleHttp\Exception\ServerException || $e instanceof \GuzzleHttp\Exception\ConnectException) {
                 // get the full text of the exception (including stack trace),
                 // and replace the original message (possibly truncated),
                 // with the full text of the entire response body.

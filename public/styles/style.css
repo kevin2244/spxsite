@@ -100,9 +100,7 @@ ins {
     background-color: lightgreen;
     vertical-align: bottom;
     width: 10rem;
-    border-width: 2px;
-    border-color: lightgray;
-    border-style:solid;
+    border: 2px solid lightgray;
 }
 
 .priceinput {

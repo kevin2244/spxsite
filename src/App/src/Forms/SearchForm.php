@@ -7,6 +7,7 @@ use Zend\Form\Element;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
 use Zend\Validator;
+use Zend\I18n;
 
 class SearchForm extends Form
 {
@@ -65,7 +66,7 @@ class SearchForm extends Form
         $textInput->setRequired(false);
         $textInput->getValidatorChain()
                   ->attach(new Validator\StringLength(['max' => 32]))
-                  ->attach(new \Zend\I18n\Validator\Alnum(true));
+                  ->attach(new I18n\Validator\Alnum(true));
 
         $inputFilter->add($marqueInput)
             ->add($textInput);

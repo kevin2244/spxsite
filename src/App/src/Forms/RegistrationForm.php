@@ -266,7 +266,7 @@ class RegistrationForm extends Form
         $usernameFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['min' => 6, 'max' => 32]))
-            ->attach(new \Zend\I18n\Validator\Alnum());
+            ->attach(new I18n\Validator\Alnum());
 
         $passwordFilter = new Input('password');
         $passwordFilter->getValidatorChain()

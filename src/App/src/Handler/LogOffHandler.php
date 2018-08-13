@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Handler;
@@ -11,11 +10,7 @@ use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Diactoros\Response;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-/**
- * User: kevin
- * Date: 03/05/2018
- * Time: 10:45
- */
+
 
 class LogOffHandler implements RequestHandlerInterface
 {
@@ -23,9 +18,6 @@ class LogOffHandler implements RequestHandlerInterface
     private $authenticationService;
     private $renderer;
 
-    /**
-     * LogOffHandler constructor.
-     */
     public function __construct(
         AuthenticationServiceInterface $authenticationService,
         TemplateRendererInterface $renderer
