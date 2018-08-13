@@ -48,7 +48,7 @@ class Search implements RequestHandlerInterface
 
                 //send to API..
                 $searchresponse = $this->spxClient->request('POST', 'search', ['json' => $postData]);
-                $searchresult = $searchresponse->getBody();
+                $searchresult = $searchresponse->getBody()->getContents();
             }
 
             else {
