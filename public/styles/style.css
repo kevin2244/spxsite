@@ -4,26 +4,6 @@ ins {
     text-decoration: none;
 }
 
-.mygrid {
-    display: grid;
-    height: 700px;
-    width: 100%;
-    background: #999999;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-row-gap: 3em;
-    grid-auto-rows: 200px;
-    border: 1px solid #000000;
-}
-
-
-.mydiv {
-    width: 150px;
-    background-color: #444;
-    color: #fff;
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 150%;
-}
 
 .modelgrid {
 
@@ -131,21 +111,9 @@ ins {
     font-size: 2em;
 }
 
-.quotegridvalueheader {
-    grid-column: 1 / -1;
-    margin: auto;
-    border: 0 solid black;
-    text-align: center;
-    font-size: 2em;
-}
 
-.quotegridheader {
-    grid-column: 1 / 2;
-    margin: auto;
-    border: 0 solid black;
-    text-align: center;
-    font-size: 2em;
-}
+
+
 
 .quotegridtext {
     grid-column: 1 / -1;
@@ -161,13 +129,7 @@ ins {
     align-self: end;
 }
 
-.quotegridinputvalue {
-    grid-column: 2;
-    border: 0 solid black;
-    justify-self: end;
-    align-self: end;
 
-}
 
 .quotegridvalue {
     grid-column: 2;
