@@ -21,6 +21,7 @@ class CarMarquesHandlerTest extends TestCase
         $data               = [];
         $data['marque']     = $marquemap[$requestedMarque];
         $data['marquedata'] = ["somekey" => "someval"];
+        $data['spxclienterror'] = false;
 
         //API prophecy
         $apiprophecy = $this->prophesize(\GuzzleHttp\ClientInterface::class);

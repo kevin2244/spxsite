@@ -1,5 +1,11 @@
 <?php
 declare(strict_types=1);
+
+if(empty($this->modeldata)) {
+    echo "No Model Data Found";
+    return;
+}
+
 $modeldata              = $this->modeldata;
 $spxmodel_Model         = '';
 $spxmodel_Marque        = '';

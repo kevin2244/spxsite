@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -85,26 +85,30 @@ class RegistrationHandler implements RequestHandlerInterface
                     $newUserData['person'] = $person;
                     $newUserData['username'] = $postData['username'];
                     $newUserData['new_password'] = $postData['password'];
-                    //$newUserData['verification_token'] = csprng::generateToken();
 
                     $response = $this->spxClient->request('POST', 'adduser',['json' => $newUserData]);
-                } catch (Exception $e) {
-                    error_log(' Handler Exception: '.$e->getMessage().gettype($e));
-                    if ($e instanceof GuzzleHttp\Exception || $e instanceof  GuzzleHttp\Exception\RequestException) {
-                        // get the full text of the exception (including stack trace),
-                        // and replace the original message (possibly truncated),
-                        // with the full text of the entire response body.
-                        $message = str_replace(
-                            rtrim($e->getMessage()),
-                            (string) $e->getResponse()->getBody(),
-                            (string) $e
-                        );
+                } catch (GuzzleException $e) {
+                    if ($e instanceof GuzzleHttp\Exception\RequestException) {
 
-                        // log your new custom guzzle error message
-                        error_log('Guzzle Exception: '.$message);
+                        // replace the original message (possibly truncated),
+                        // with the full text of the response body.
+                        if (!empty($e->getResponse())) {
+                            $message = str_replace(
+                                rtrim($e->getMessage()),
+                                (string)$e->getResponse()->getBody(),
+                                (string)$e
+                            );
+                        } else {
+                            $message = $e->getMessage();
+                        }
+                        error_log('Guzzle RequestException: ' .
+                            $message, E_USER_ERROR);
                     }
                     else {
-                        error_log('Exception: '.$e->getMessage().$e->getFile().$e->getLine());
+                        error_log('GuzzleException: '
+                            . $e->getMessage()
+                            . $e->getFile()
+                            . $e->getLine(), E_USER_ERROR);
                     }
                 }
 
@@ -121,25 +125,8 @@ class RegistrationHandler implements RequestHandlerInterface
                             '/users',
                             ['json' => ['username' => $postData['username']]]
                         );
-                    } catch (Exception $e) {
-                        error_log(' Handler Exception: '.$e->getMessage().gettype($e));
-
-                        if ($e instanceof GuzzleHttp\Exception || $e instanceof  GuzzleHttp\Exception\RequestException) {
-                            // get the full text of the exception (including stack trace),
-                            // and replace the original message (possibly truncated),
-                            // with the full text of the entire response body.
-                            $message = str_replace(
-                                rtrim($e->getMessage()),
-                                (string) $e->getResponse()->getBody(),
-                                (string) $e
-                            );
-
-                            // log your new custom guzzle error message
-                            error_log('Guzzle Exception: '.$message);
-                        }
-                        else {
-                            error_log('Exception: '.$e->getMessage().$e->getFile().$e->getLine());
-                        }
+                    } catch (GuzzleException $e) {
+                            error_log('GuzzleException: '.$e->getMessage().$e->getFile().$e->getLine(), E_USER_ERROR);
                     }
                     $userDataResponse = json_decode($userResponse->getBody()->getContents(), true);
                     $userData = reset($userDataResponse);
@@ -150,7 +137,6 @@ class RegistrationHandler implements RequestHandlerInterface
                     $data['user_add_success'] = true;
 
                     //Instantiate the Mailgun SDK with API credentials
-
                     $mg = Mailgun::create($this->mailgunConfig['mailgun_api_key']);
 
                     $serverUrlHelper = $this->serverUrlHelper;

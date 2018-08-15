@@ -26,12 +26,12 @@ class CarMarquesHandler implements RequestHandlerInterface
         $marquemap = [],
         GuzzleHttp\ClientInterface $spxClient
     ) {
-        $this->template  = $template;
+        $this->template = $template;
         $this->marquemap = $marquemap;
         $this->spxClient = $spxClient;
     }
 
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $marquerq = $request->getAttribute('marque');
 
@@ -47,42 +47,49 @@ class CarMarquesHandler implements RequestHandlerInterface
         if (!empty($marquemap[$marquerq])) {
 
             $marque = $marquemap[$marquerq];
-        }
-        else {
+        } else {
             return new HtmlResponse($this->template->render('error::404'), 404);
         }
 
+        $spxclienterror = false;
         try {
             $response = $this->spxClient->request('GET', "models/$marque");
         } catch (GuzzleException $e) {
-            error_log(' Handler Exception: '.$e->getMessage().gettype($e));
-            if ($e instanceof GuzzleHttp\Exception || $e instanceof  GuzzleHttp\Exception\RequestException) {
-                // get the full text of the exception (including stack trace),
-                // and replace the original message (possibly truncated),
-                // with the full text of the entire response body.
-                if(!empty($e->getResponse())) {
+
+            $spxclienterror = true;
+            if ($e instanceof GuzzleHttp\Exception\RequestException) {
+
+                // replace the original message (possibly truncated),
+                // with the full text of the response body.
+                if (!empty($e->getResponse())) {
                     $message = str_replace(
                         rtrim($e->getMessage()),
                         (string)$e->getResponse()->getBody(),
                         (string)$e
                     );
+                } else {
+                    $message = $e->getMessage();
                 }
-                else {$message = $e->getMessage();}
-                // log your new custom guzzle error message
-                error_log('Guzzle Exception: '.$message);
-            }
-            else {
-                error_log('Exception: '.$e->getMessage().$e->getFile().$e->getLine());
+                error_log('Guzzle RequestException: ' .
+                    $message, E_USER_ERROR);
+            } else {
+                error_log('GuzzleException: '
+                    . $e->getMessage()
+                    . $e->getFile()
+                    . $e->getLine(), E_USER_ERROR);
             }
         }
 
-        $data               = [];
-        $data['marque']     = $marque;
-        $data['marquedata'] = json_decode($response->getBody()->getContents(), true);
+        $data = [];
+        $data['marque'] = $marque;
+        $data['spxclienterror'] = $spxclienterror;
+        $data['marquedata'] = (!$spxclienterror)
+            ? json_decode($response->getBody()->getContents(), true)
+            : [];
 
-        return new HtmlResponse($this->template->render('app::car-marques', $data));
+        return new HtmlResponse($this->template->render('app::car-marques',
+            $data));
     }
-
 
 
 }

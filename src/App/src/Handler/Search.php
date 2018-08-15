@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Handler;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -10,6 +11,7 @@ use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Form\FormInterface;
 use GuzzleHttp;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Search implements RequestHandlerInterface
 {
@@ -36,10 +38,11 @@ class Search implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $data = [];
-        $searchresult = '';
+        $searchresult = '[]';
+        $searchInitiated = false;
 
-        if ($request->getMethod() == 'POST') {
-
+        if ($request->getMethod() === 'POST') {
+            $searchInitiated = true;
             $postData = $request->getParsedBody();
             $this->form->setData($postData);
 
@@ -47,10 +50,14 @@ class Search implements RequestHandlerInterface
                 $data['success'] = 'success';
 
                 //send to API..
-                $searchresponse = $this->spxClient->request('POST', 'search', ['json' => $postData]);
-                $searchresult = $searchresponse->getBody()->getContents();
+                try {
+                    $searchresult = $this->spxClient->request('POST',
+                        'search', ['json' => $postData])->getBody()->getContents();
+                } catch (GuzzleException $e) {
+                    error_log('Caught GuzzleException' . $e->getMessage(),
+                        E_USER_ERROR);
+                }
             }
-
             else {
                 $data['success'] = 'Not Valid';
                 $data['messages'] = $this->form->getMessages();
@@ -58,9 +65,7 @@ class Search implements RequestHandlerInterface
         }
         $data['form'] = $this->form;
         $data['searchresult'] = $searchresult;
-
-
-
+        $data['search_initiated'] = $searchInitiated;
 
         // Render and return a response:
         return new HtmlResponse($this->renderer->render(

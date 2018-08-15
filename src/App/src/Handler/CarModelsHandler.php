@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use GuzzleHttp;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -18,7 +19,7 @@ class CarModelsHandler implements RequestHandlerInterface
 {
     private $template;
     private $marquemap;
-    private  $spxClient;
+    private $spxClient;
 
     public function __construct(
         Template\TemplateRendererInterface $template = null,
@@ -83,22 +84,22 @@ class CarModelsHandler implements RequestHandlerInterface
         $modelUrl   = $escaper->escapeUrl($model);
         $modelHtml  = $escaper->escapeHtml($model);
 
-        $response   = $this->spxClient->request('GET', "marque/$marqueKeyName/model/$model");
-        $data       = [];
-        $cardata    = json_decode($response->getBody()->getContents(), true);
+        $data = [];
 
-        if (empty($cardata)) {
-            return new HtmlResponse($this->template->render('error::404'), 404);
-        }
-        else {
-            $data['cardata'] = $cardata;
+        try {
+            $cardata = json_decode($this->spxClient->request('GET', "marque/$marqueKeyName/model/$model")->getBody()->getContents(), true);
+        } catch (GuzzleException $e) {
+            error_log('GuzzleException' . $e->getMessage(),
+                E_USER_ERROR);
+            $cardata = [];
         }
 
-        $data['marquekeyname'] = $marqueKeyName;
-        $data['marquename'] = $marqueName;
-        $data['model'] = $model;
-        $data['modelhtml'] = $modelHtml;
-        $data['modelurl'] = $modelUrl;
+        $data['cardata']        = $cardata;
+        $data['marquekeyname']  = $marqueKeyName;
+        $data['marquename']     = $marqueName;
+        $data['model']          = $model;
+        $data['modelhtml']      = $modelHtml;
+        $data['modelurl']       = $modelUrl;
 
         return new HtmlResponse($this->template->render('app::car-models', $data));
     }

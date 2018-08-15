@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Zend\Authentication\Result;
 use Zend\Authentication\Adapter\AdapterInterface;
 use GuzzleHttp;
@@ -49,7 +50,10 @@ class AuthAdapter implements AdapterInterface
         // PHP password_hash() function!
 
         $auth = $this->getAuth();
+
         $ret = new Result(Result::FAILURE_CREDENTIAL_INVALID, $this->username);
+
+
 
         if (!isset($auth['verified'])) {
             return $ret;
@@ -72,10 +76,10 @@ class AuthAdapter implements AdapterInterface
 
        try {
             $ret = json_decode($this->spxClient->request('GET', "getuserauth/$username")->getBody()->getContents(), true);
-        } catch (GuzzleHttp\Exception\GuzzleException $exception) {
-            error_log('Guzzle Exception');
+       } catch (GuzzleException $e) {
+            error_log('GuzzleException' . $e->getMessage(),
+                E_USER_ERROR);
         }
-
         return $ret;
     }
 }

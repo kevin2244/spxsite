@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use GuzzleHttp;
-use function json_decode;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -34,16 +34,19 @@ class CarModelHandler implements RequestHandlerInterface
 
         $idfilter = new Alnum();
         $modelid  = $idfilter->filter($request->getAttribute('modelid'));
-        $response = $this->spxClient->request('GET', "model/modelid/$modelid");
+
+        try {
+            $modelData = json_decode($this->spxClient->request('GET', "model/modelid/$modelid")->getBody()->getContents(), true);
+        } catch (GuzzleException $e) {
+            $modelData = [];
+            error_log('GuzzleException' . $e->getMessage(),
+                E_USER_ERROR);
+        }
 
         $data = [];
-
-        $data['modeldata'] = json_decode($response->getBody()->getContents(), true);
-
+        $data['modeldata'] = $modelData;
         $data['modelid'] = $modelid;
-
         $data['marquemap'] = $this->marquemap;
-
 
         return new HtmlResponse($this->template->render('app::car-model', $data));
     }

@@ -62,9 +62,6 @@ EOF;
 </div>
 
 <?php
-
-if (empty($this->searchresult)) {return;}
-
 $res = json_decode($this->searchresult, true);
 $fields             = [];
 $excludes           = ['Marque'];
@@ -78,6 +75,9 @@ if (!empty($res)) {
         $showfields = array_diff(array_keys($truck),$excludes);
         $fields += array_diff($showfields, $fields);
     }
+} elseif ($this->search_initiated === true) {
+    echo 'No results found';
+    return;
 }
 
 $setmodel = '';

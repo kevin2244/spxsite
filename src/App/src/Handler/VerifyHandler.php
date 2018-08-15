@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use GuzzleHttp;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -35,38 +35,31 @@ class VerifyHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
 
+        $data = [];
+        $verified = [];
+        $data['verified'] = 'Verification Failure';
+
         //filter input
         $requestToken = $request->getAttribute('token');
         $sfilter = new I18n\Filter\Alnum();
         $token = $sfilter->filter($requestToken);
 
+
         //verify token
         try {
             $response = $this->spxClient->request('GET', "/verifyuser/$token");
-        } catch (GuzzleHttp\Exception\ServerException $e) {
+            $verified = json_decode($response->getBody()->getContents(), true);
+        } catch (GuzzleException $e) {
 
-            if ($e instanceof GuzzleHttp\Exception || $e instanceof  \GuzzleHttp\Exception\ServerException || $e instanceof \GuzzleHttp\Exception\ConnectException) {
-                // get the full text of the exception (including stack trace),
-                // and replace the original message (possibly truncated),
-                // with the full text of the entire response body.
-                $message = str_replace(
-                    rtrim($e->getMessage()),
-                    (string) $e->getResponse()->getBody(),
-                    (string) $e
-                );
+            error_log('GuzzleException' . $e->getMessage(),
+                E_USER_ERROR);
+        }
 
-                // log your new custom guzzle error message
-                error_log('Guzzle Exception: '.$message);
-            }
-            else {
-                error_log('Exception: '.$e->getMessage().$e->getFile().$e->getLine());
+        if (array_key_exists('verified', $verified)) {
+            if  ($verified['verified'] === true) {
+                $data['verified'] = 'Verified';
             }
         }
-        $verified = json_decode($response->getBody()->getContents(), true);
-
-        $data = [];
-        $data['verified'] = ($verified['verified'] === true) ? 'Verified' :
-            'Verification Failure';
 
         return new HtmlResponse($this->renderer->render(
             'app::verify',
