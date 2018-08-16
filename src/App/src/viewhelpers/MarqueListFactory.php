@@ -3,19 +3,15 @@ declare(strict_types=1);
 
 namespace App\viewhelpers;
 
-use Zend\ServiceManager\AbstractPluginManager;
-
+use Psr\Container\ContainerInterface;
 use Zend\View\HelperPluginManager;
 
 class MarqueListFactory
 {
-    public function __invoke($container)
+    public function __invoke(ContainerInterface $container)
     {
-        if (!$container instanceof AbstractPluginManager) {
-
-            //see https://docs.zendframework.com/zend-view/helpers/advanced-usage/
-            $vcontainer = $container->get(HelperPluginManager::class);
-        }
+        //see https://docs.zendframework.com/zend-view/helpers/advanced-usage/
+        $vcontainer = $container->get(HelperPluginManager::class);
 
         return new MarqueList(
             $container->get('config')['hosts'],
