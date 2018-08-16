@@ -15,6 +15,7 @@ $this->form->setAttribute('method', 'post');
 $this->form->setAttribute('class', 'form-inline');
 $lform = $this->form()->openTag($this->form);
 
+/** @var \Zend\Form\Element $element */
 foreach ($this->form->getElements() as $name => $element) :
 
     switch($element->getAttributes()['type']) {

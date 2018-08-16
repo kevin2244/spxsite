@@ -14,9 +14,6 @@ use Psr\Container\ContainerInterface;
 
 class RouteHelperFactory
 {
-    /**
-     * Create a RouteHelper instance.
-     */
     public function __invoke(ContainerInterface $container) : RouteHelper
     {
         return $container->get(RouteHelper::class);

@@ -52,8 +52,9 @@ class CarMarquesHandler implements RequestHandlerInterface
         }
 
         $spxclienterror = false;
+        $response = '[]';
         try {
-            $response = $this->spxClient->request('GET', "models/$marque");
+            $response = $this->spxClient->request('GET', "models/$marque")->getBody()->getContents();
         } catch (GuzzleException $e) {
 
             $spxclienterror = true;
@@ -84,7 +85,7 @@ class CarMarquesHandler implements RequestHandlerInterface
         $data['marque'] = $marque;
         $data['spxclienterror'] = $spxclienterror;
         $data['marquedata'] = (!$spxclienterror)
-            ? json_decode($response->getBody()->getContents(), true)
+            ? json_decode($response, true)
             : [];
 
         return new HtmlResponse($this->template->render('app::car-marques',

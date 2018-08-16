@@ -34,7 +34,7 @@ class MarqueList extends AbstractHelper
             $noresponse = true;
         }
 
-        if (empty($noresponse)) {
+        if (empty($noresponse) && isset($response)) {
 
             $marqueListData = json_decode($response->getBody()->getContents(), true);
             foreach ($marqueListData as $marque => $data) {
