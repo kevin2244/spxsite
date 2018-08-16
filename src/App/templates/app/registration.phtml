@@ -51,7 +51,7 @@ EOF;
         $displayForm .= '&nbsp;';
     endforeach;
 
-    $displayForm .= ($displaySubmitButton) ??  '';
+    $displayForm .= $displaySubmitButton ??  '';
 
     $displayForm .= $this->form()->closeTag($this->form);
     $disperrors = '';
