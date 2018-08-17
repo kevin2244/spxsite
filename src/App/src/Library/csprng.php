@@ -1,10 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
- * User: kevin
- * Date: 23/05/2018
- * Time: 02:10
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
+declare(strict_types=1);
+
 
 namespace App\Library;
 

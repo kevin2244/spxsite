@@ -1,10 +1,9 @@
 <?php
 /**
- * User: kevin
- * Date: 02/05/2018
- * Time: 18:55
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
-
 declare(strict_types=1);
 
 namespace App\viewhelpers;

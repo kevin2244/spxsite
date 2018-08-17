@@ -1,11 +1,12 @@
 <?php
+/**
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
+ */
 declare(strict_types=1);
 
-/**
- * User: kevin
- * Date: 03/05/2018
- * Time: 08:41
- */
+
 namespace App\viewhelpers;
 
 use Zend\Authentication\AuthenticationServiceInterface;

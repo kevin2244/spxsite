@@ -1,10 +1,10 @@
 <?php
-declare(strict_types=1);
 /**
- * User: kevin
- * Date: 28/04/2018
- * Time: 06:04
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
+declare(strict_types=1);
 
 namespace App\Auth;
 

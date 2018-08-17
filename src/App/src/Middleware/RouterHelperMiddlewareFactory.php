@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: kevin
- * Date: 27/04/2018
- * Time: 02:48
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
+declare(strict_types=1);
+
 
 namespace App\Middleware;
 

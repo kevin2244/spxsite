@@ -1,8 +1,8 @@
 <?php
 /**
- * User: kevin
- * Date: 22/04/2018
- * Time: 10:15
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
 declare(strict_types=1);
 

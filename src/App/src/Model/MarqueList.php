@@ -1,11 +1,6 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: kevin
- * Date: 22/04/2018
- * Time: 09:21
- */
+
 namespace App\Model;
 use Psr\Container\ContainerInterface;
 

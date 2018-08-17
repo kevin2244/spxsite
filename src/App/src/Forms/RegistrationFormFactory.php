@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: kevin
- * Date: 17/05/2018
- * Time: 21:01
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
+declare(strict_types=1);
+
 
 namespace App\Forms;
 

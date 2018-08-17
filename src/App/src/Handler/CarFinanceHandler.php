@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
+ */
 declare(strict_types=1);
 
 namespace App\Handler;

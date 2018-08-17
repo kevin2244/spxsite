@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: kevin
- * Date: 17/04/2018
- * Time: 01:22
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
+declare(strict_types=1);
+
 
 namespace App\Forms;
 use App\Model\MarqueList;

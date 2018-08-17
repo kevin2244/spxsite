@@ -1,11 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: kevin
- * Date: 07/04/2018
- * Time: 17:29
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
  */
-
 declare(strict_types=1);
 
 namespace App\Handler;

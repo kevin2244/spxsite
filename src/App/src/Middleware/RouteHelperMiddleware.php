@@ -1,4 +1,9 @@
 <?php
+/**
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
+ */
 declare(strict_types=1);
 
 namespace App\Middleware;
@@ -11,11 +16,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Expressive\Router\RouteResult;
 
 
-/**
- * User: kevin
- * Date: 27/04/2018
- * Time: 02:34
- */
+
 
 class RouteHelperMiddleware implements MiddlewareInterface
 {

@@ -1,4 +1,9 @@
 <?php
+/**
+ * SPX Site
+ *
+ * @copyright Kevin Smith 2018
+ */
 declare(strict_types=1);
 
 namespace App\viewhelpers;
@@ -7,11 +12,7 @@ use Psr\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
 
 
-/**
- * User: kevin
- * Date: 02/05/2018
- * Time: 19:47
- */
+
 
 class IdentHelperFactory
 {
