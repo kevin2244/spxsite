@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace App\Forms;
 
-
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Zend\InputFilter\InputFilter;
@@ -24,6 +23,9 @@ class RegistrationForm extends Form
     public function __construct($name = null, array $options = [])
     {
         parent::__construct($name, $options);
+
+
+
 
         $this->add([
             'name' => 'username',
@@ -248,8 +250,8 @@ class RegistrationForm extends Form
         ]);
 
         $recaptureOptions = [
-            'secret_key' => '6Lc4OF0UAAAAAHSqa81AiIv-OpydqfZzwhcOe6Ij',
-            'site_key' => '6Lc4OF0UAAAAAPQPILnUf7Y2_sHurdaoGgkc-HSb'
+            'secret_key' => $options['recapture_config']['secret_key'],
+            'site_key' => $options['recapture_config']['site_key']
         ];
 
         $this->add([
