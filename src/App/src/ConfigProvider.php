@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 namespace App;
+
 use Zend\Authentication\AuthenticationService;
 
 /**
@@ -51,15 +52,18 @@ class ConfigProvider
                 Handler\CarModelsHandler::class  => Handler\CarModelsHandlerFactory::class,
                 Handler\AboutHandler::class => Handler\AboutHandlerFactory::class,
                 Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
-                Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
+                Handler\ScrappageSchemesExplainedHandler::class =>
+                    Handler\ScrappageSchemesExplainedHandlerFactory::class,
                 Handler\RegistrationHandler::class => Handler\RegistrationHandlerFactory::class,
                 Forms\SearchForm::class => Forms\SearchFormFactory::class,
                 Forms\RegistrationForm::class => Forms\RegistrationFormFactory::class,
+                Forms\AddItemForm::class => Forms\AddItemFormFactory::class,
                 Model\SPXGuzzleClientFactory::class => Model\SPXGuzzleClientFactory::class,
                 Auth\AuthAdapter::class => Auth\AuthAdapterFactory::class,
                 AuthenticationService::class => Auth\AuthenticationServiceFactory::class,
                 Middleware\AuthMiddleware::class => Middleware\AuthMiddlewareFactory::class,
-                Handler\LogOffHandler::class => Handler\LogOffHandlerFactory::class
+                Handler\LogOffHandler::class => Handler\LogOffHandlerFactory::class,
+                Helpers\IdentHelper::class => Helpers\IdentHelperFactory::class,
             ],
         ];
     }

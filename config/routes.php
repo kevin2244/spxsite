@@ -38,16 +38,22 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/about', [App\Handler\AboutHandler::class], 'about');
     $app->get('/car-finance', App\Handler\CarFinanceHandler::class, 'car-finance');
     $app->get('/hire-purchase-hp', App\Handler\HirePurchaseHP::class, 'hire-purchase-hp');
-    $app->get('/scrappage-schemes-explained', App\Handler\ScrappageSchemesExplainedHandler::class, 'scrappage-schemes-explained');
+    $app->get(
+        '/scrappage-schemes-explained',
+        App\Handler\ScrappageSchemesExplainedHandler::class,
+        'scrappage-schemes-explained'
+    );
     $app->get('/marque/{marque:.*}/model/{model:.*}/id/{modelid:.*}', App\Handler\CarModelHandler::class, 'carmodel');
     $app->get('/marque/{marque:.*}/model/{model:.*}', App\Handler\CarModelsHandler::class, 'carmodels');
     $app->get('/marque/{marque:.*}', App\Handler\CarMarquesHandler::class, 'carmarques');
     $app->post('/search', App\Handler\Search::class, 'search');
     $app->get('/search', App\Handler\Search::class, 'search-post');
-    $app->get('/logon', App\Handler\LogonHandler::class,'log-on');
+    $app->get('/logon', App\Handler\LogonHandler::class, 'log-on');
     $app->post('/logon', App\Handler\LogonHandler::class, 'log-on-post');
     $app->get('/logoff', App\Handler\LogOffHandler::class, 'log-off');
     $app->get('/register', App\Handler\RegistrationHandler::class, 'registration');
     $app->post('/register', App\Handler\RegistrationHandler::class, 'registration-post');
-    $app->get('/verify/{token:.*}', App\Handler\VerifyHandler::class,'verify');
+    $app->get('/verify/{token:.*}', App\Handler\VerifyHandler::class, 'verify');
+    $app->get('/addcar', App\Handler\AddItemHandler::class, 'additem');
+    $app->post('/addcar', App\Handler\AddItemHandler::class, 'additem-post');
 };

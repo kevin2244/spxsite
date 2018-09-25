@@ -1,0 +1,103 @@
+<?php
+/**
+ * @copyright Kevin Smith 2018
+ */
+declare(strict_types = 1);
+
+$this->headTitle('Add Car');
+
+if (isset($this->form)) {
+
+    $this->form->prepare();
+    $this->form->setAttribute('method', 'post');
+
+    $displayForm = $this->form()->openTag($this->form);
+
+    /** @var \Zend\Form\Element $element */
+    foreach ($this->form->getElements() as $name => $element) :
+
+        if (!empty($element->getAttributes()['type'])) {
+            switch ($element->getAttributes()['type']) {
+
+                case 'submit':
+                    $element->setAttributes(['class' => 'btn btn-default']);
+                    $displaySubmitButton = $this->formElement($element);
+                    break;
+
+                default:
+                    $element->setAttributes(['class' => 'form-control']);
+                    $displayForm
+                        .= <<<EOF
+            <div class = "form-group">
+EOF;
+                    if (!empty($element->getLabel())) {
+                        $displayForm .= $this->formLabel($element);
+                    }
+                    $displayForm .= $this->formElement($element);
+                    $displayForm .= $this->formElementErrors($element);
+                    $displayForm .= '</div>';
+                    break;
+            }
+        }
+        elseif ($name == 'g-recaptcha-response') {
+            $displayForm
+                .= <<<EOF
+            <div class = "form-group">
+EOF;
+            if (!empty($element->getLabel())) {
+                $displayForm .= $this->formLabel($element);
+            }
+            $displayForm .= $this->formElement($element);
+            $displayForm .= $this->formElementErrors($element);
+            $displayForm .= '</div>';
+            break;
+        }
+        $displayForm .= '&nbsp;';
+    endforeach;
+
+    $displayForm .= $displaySubmitButton ??  '';
+
+    $displayForm .= $this->form()->closeTag($this->form);
+    $disperrors = '';
+
+    if (isset($this->messages)) {
+
+        foreach ($this->messages as $ekey => $eerrors) {
+            $disperror = '';
+            foreach ($eerrors as $validator => $verror) {
+                $disperror .= "$validator: $verror<br />";
+            }
+            $disperrors
+                .= <<<EOF
+        FORM: $ekey : $disperror<br />
+EOF;
+        }
+
+    }
+
+    if (!empty($disperrors)) {
+        $dispe
+            = <<<EOF
+            <div class="alert alert-danger">$disperrors</div>
+EOF;
+    }
+}
+?>
+<h2>Add Car</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8"><?php if (!empty($displayForm)) {echo $displayForm;} ?></div>
+<div class="col-lg-4"><?php if (!empty($dispe)) {echo $dispe;} ?></div>
+</div>
+</div>
+<div><?php
+        $errorMessage = '';
+        if ($this->add_item_success === true) {
+            $errorMessage = 'Car added OK';
+        } elseif ($this->add_item_success === false) {
+            $errorMessage = 'There was a problem adding the car';
+        }
+        echo $errorMessage;
+    ?>
+</div>
+<div><?php if (!empty($form_success)) {echo $form_success;} ?></div>
