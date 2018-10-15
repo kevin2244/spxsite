@@ -25,6 +25,15 @@ ins {
     border: 2px solid #7991f6e6;
 }
 
+.caritemgrid {
+    display: grid;
+    width: 100%;
+    background: #ffffff;
+    grid-template-columns: 1fr;
+    grid-row-gap: 1em;
+    border: 2px solid rgba(246, 147, 73, 0.9);
+}
+
 .modelheader {
     grid-column: 1 / -1;
     margin: auto;

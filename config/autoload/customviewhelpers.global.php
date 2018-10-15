@@ -10,6 +10,8 @@ use App\viewhelpers\MarqueListFactory;
 use App\viewhelpers\RouteHelper;
 use App\viewhelpers\LogOnOffToggleHelper;
 use App\viewhelpers\LogOnOffToggleHelperFactory;
+use App\viewhelpers\TogggleSecondsHelperFactory;
+use App\viewhelpers\ToggleSecondsHelper;
 
 
 return [
@@ -21,13 +23,15 @@ return [
             'MarqueList' => MarqueList::class,
             'routeHelper' => RouteHelper::class,
             'IdentHelper' => IdentHelper::class,
-            'LogOnOffToggleHelper' => LogOnOffToggleHelper::class
+            'LogOnOffToggleHelper' => LogOnOffToggleHelper::class,
+            'ToggleSecondsHelper' => ToggleSecondsHelper::class
         ],
         'factories' => [
             MarqueList::class => MarqueListFactory::class,
             RouteHelper::class => RouteHelperFactory::class,
             IdentHelper::class => IdentHelperFactory::class,
-            LogOnOffToggleHelper::class => LogOnOffToggleHelperFactory::class
+            LogOnOffToggleHelper::class => LogOnOffToggleHelperFactory::class,
+            ToggleSecondsHelper::class => TogggleSecondsHelperFactory::class
         ]
     ]
 ];

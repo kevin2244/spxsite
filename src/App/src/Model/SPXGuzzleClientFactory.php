@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types = 1);
 
 namespace App\Model;
@@ -15,7 +14,6 @@ class SPXGuzzleClientFactory
     {
         $hosts = $container->get('config')['hosts'];
         $guzzleClient = new GuzzleHttp\Client(['base_uri' => $hosts['SPX_URL']]);
-
         return $guzzleClient;
     }
 }

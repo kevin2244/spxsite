@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Handler\ItemHandlerFactory;
+use App\Handler\ItemListHandlerFactory;
 use Zend\Authentication\AuthenticationService;
 
 /**
@@ -52,8 +54,7 @@ class ConfigProvider
                 Handler\CarModelsHandler::class  => Handler\CarModelsHandlerFactory::class,
                 Handler\AboutHandler::class => Handler\AboutHandlerFactory::class,
                 Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
-                Handler\ScrappageSchemesExplainedHandler::class =>
-                    Handler\ScrappageSchemesExplainedHandlerFactory::class,
+                Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
                 Handler\RegistrationHandler::class => Handler\RegistrationHandlerFactory::class,
                 Forms\SearchForm::class => Forms\SearchFormFactory::class,
                 Forms\RegistrationForm::class => Forms\RegistrationFormFactory::class,
@@ -64,6 +65,8 @@ class ConfigProvider
                 Middleware\AuthMiddleware::class => Middleware\AuthMiddlewareFactory::class,
                 Handler\LogOffHandler::class => Handler\LogOffHandlerFactory::class,
                 Helpers\IdentHelper::class => Helpers\IdentHelperFactory::class,
+                Handler\ItemListHandler::class => ItemListHandlerFactory::class,
+                Handler\ItemHandler::class => ItemHandlerFactory::class
             ],
         ];
     }

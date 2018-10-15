@@ -18,179 +18,227 @@ $this->inlineScript()
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link rel="shortcut icon" href="https://framework.zend.com/ico/favicon.ico" />
-    <?= $this->headTitle('Scrappage')->setSeparator(' | ')->setAutoEscape(false) ?>
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" media="screen" rel="stylesheet" type="text/css">
-    <?=$this->headMeta()?>
-    <?=$this->headLink()?>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="shortcut icon"
+          href="https://framework.zend.com/ico/favicon.ico"/>
+    <?= $this->headTitle('Scrappage')->setSeparator(' | ')
+        ->setAutoEscape(false) ?>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
+          media="screen" rel="stylesheet" type="text/css">
+    <?= $this->headMeta() ?>
+    <?= $this->headLink() ?>
     <style>
-        body { padding-top: 70px; }
+        body {
+            padding-top: 70px;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="#navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- Brand -->
-                    <a class="navbar-brand" href="<?=$this->url('home')?>">
-                        <img src="/images/cropped-glowing_scrappage_on_rust_rnd.gif" alt="Scrappage.co.uk Logo" height="40" />
-                    </a>
-                </div>
-                <!-- Links -->
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top"
+         role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggler"
+                        data-toggle="collapse" data-target="#navbarCollapse"
+                        aria-controls="#navbarCollapse" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Brand -->
+                <a class="navbar-brand" href="<?= $this->url('home') ?>">
+                    <img src="/images/cropped-glowing_scrappage_on_rust_rnd.gif"
+                         alt="Scrappage.co.uk Logo" height="40"/>
+                </a>
+            </div>
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
 
 
+                    <li class="nav-item">
+                        <a href="<?= $this->url('about') ?>" class="nav-link">
+                            About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= $this->url('scrappage-schemes-explained') ?>"
+                           class="nav-link">
+                            Scrappage Explained
+                        </a>
+                    </li>
+                    <?php if ($this->ToggleSecondsHelper()): ?>
                         <li class="nav-item">
-                            <a href="<?=$this->url('about')?>" class="nav-link">
-                                About
+                            <a href="<?= $this->url('itemlist') ?>"
+                               class="nav-link">
+                                Second Hand
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?=$this->url('scrappage-schemes-explained')?>" class="nav-link">
-                                Scrappage Explained
+                    <?php endif; ?>
+                    <li class="nav-item">
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle"
+                               href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                New Cars
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    New Cars
-                                </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <?php echo $this->MarqueList() ?>
-                                </div>
+                            <div class="dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <?php echo $this->MarqueList() ?>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
 
-
-
-
-
-                        <li class="nav-item">
-                            <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Scrappage Schemes
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="<?= $this->serverUrl('/sp/mercedes') ?>">Mercedes-Benz</a>
-                                    <a class="dropdown-item" href="<?= $this->serverUrl('/sp/ford') ?>">Ford</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Finance
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('car-finance')) ?>">Get Car Finance</a>
-                                    <a class="dropdown-item" href="<?= $this->serverUrl($this->url('hire-purchase-hp')) ?>">HP Finance</a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= $this->serverUrl('/sp/') ?>" class="nav-link">
-                                Blog
+                    <li class="nav-item">
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle"
+                               href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                Scrappage Schemes
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= $this->serverUrl('/search') ?>" class="nav-link">
-                                Search
+
+                            <div class="dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item"
+                                   href="<?= $this->serverUrl('/sp/mercedes') ?>">Mercedes-Benz</a>
+                                <a class="dropdown-item"
+                                   href="<?= $this->serverUrl('/sp/ford') ?>">Ford</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle"
+                               href="#" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                Finance
                             </a>
-                        </li>
-                        <li class="nav-item">
+
+                            <div class="dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item"
+                                   href="<?= $this->serverUrl($this->url('car-finance')) ?>">Get
+                                    Car Finance</a>
+                                <a class="dropdown-item"
+                                   href="<?= $this->serverUrl($this->url('hire-purchase-hp')) ?>">HP
+                                    Finance</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= $this->serverUrl('/sp/') ?>"
+                           class="nav-link">
+                            Blog
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= $this->serverUrl('/search') ?>"
+                           class="nav-link">
+                            Search
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <?= $this->LogOnOffToggleHelper() ?>
-                        </li>
-                        <li class = "nav-item">
+                    </li>
+                    <li class="nav-item">
                             <span class="navbar-text">
                                 <?php
-                                echo $this->IdentHelper()['firstname'].
-                                    ' '.
+                                echo $this->IdentHelper()['firstname'] .
+                                    ' ' .
                                     $this->IdentHelper()['lastname'];
                                 ?>
                             </span>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= $this->serverUrl($this->url('registration')) ?>" class="nav-link">
-                                Register
-                            </a>
-                        </li>
-                    </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= $this->serverUrl($this->url('registration')) ?>"
+                           class="nav-link">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+            <?= $this->content ?>
+        </div>
+        <div class="col-md-2">
+            <div>
+
+                <h2><b>POSTS</b></h2>
+
+                <ul>
+                    <li>
+                        <a href="https://scrappage.co.uk/sp/hyundai-extends-scrappage-scheme/">Hyundai
+                            Extends Scrappage Scheme</a>
+                        <span class="post-date">4th January 2018</span>
+                    </li>
+                    <li>
+                        <a href="https://scrappage.co.uk/sp/kia-extends-scrappage-scheme-to-2018/">Kia
+                            Extends Scrappage Scheme to 2018</a>
+                        <span class="post-date">2nd January 2018</span>
+                    </li>
+                    <li>
+                        <a href="https://scrappage.co.uk/sp/vw-extends-scrappage-scheme-into-2018/">VW
+                            extends scrappage scheme into 2018</a>
+                        <span class="post-date">31st December 2017</span>
+                    </li>
+                    <li>
+                        <a href="https://scrappage.co.uk/sp/toyota-extends-scrappage-scheme/">Toyota
+                            Extends Scrappage Scheme</a>
+                        <span class="post-date">13th December 2017</span>
+                    </li>
+                    <li>
+                        <a href="https://scrappage.co.uk/sp/ford-extends-scrappage-scheme/">Ford
+                            Extends Scrappage Scheme</a>
+                        <span class="post-date">13th December 2017</span>
+                    </li>
+                    <li>
+                        <a href="https://scrappage.co.uk/sp/diesel-drivers-could-face-repair-bill-or-1000-fine/">Diesel
+                            drivers could face repair bill or £1,000 fine</a>
+                        <span class="post-date">29th October 2017</span>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        Check these out:
+                    </li>
+                    <li>
+                        <a href="<?= $this->serverUrl($this->url('carmodel', [
+                            'marque'  => 'Kia',
+                            'model'   => 'Picanto',
+                            'modelid' => '5aad14d8c65afe6fa89be359'
+                        ])) ?>">Kia Picanto £58.48/mo</a>
+                    </li>
+                </ul>
+                <div>
                 </div>
             </div>
-        </nav>
-    </header>
-
-	<div class="container-fluid">
-	     <div class="row">		
-	     	  <div class="col-md-10">
-                  <?=$this->content?>
-	    	  </div>
-	    	  <div class="col-md-2">
-                  <div>
-
-                      <h2><b>POSTS</b></h2>
-
-                      <ul>
-                          <li>
-                              <a href="https://scrappage.co.uk/sp/hyundai-extends-scrappage-scheme/">Hyundai Extends Scrappage Scheme</a>
-                              <span class="post-date">4th January 2018</span>
-                          </li>
-                          <li>
-                              <a href="https://scrappage.co.uk/sp/kia-extends-scrappage-scheme-to-2018/">Kia Extends Scrappage Scheme to 2018</a>
-                              <span class="post-date">2nd January 2018</span>
-                          </li>
-                          <li>
-                              <a href="https://scrappage.co.uk/sp/vw-extends-scrappage-scheme-into-2018/">VW extends scrappage scheme into 2018</a>
-                              <span class="post-date">31st December 2017</span>
-                          </li>
-                          <li>
-                              <a href="https://scrappage.co.uk/sp/toyota-extends-scrappage-scheme/">Toyota Extends Scrappage Scheme</a>
-                              <span class="post-date">13th December 2017</span>
-                          </li>
-                          <li>
-                              <a href="https://scrappage.co.uk/sp/ford-extends-scrappage-scheme/">Ford Extends Scrappage Scheme</a>
-                              <span class="post-date">13th December 2017</span>
-                          </li>
-                          <li>
-                              <a href="https://scrappage.co.uk/sp/diesel-drivers-could-face-repair-bill-or-1000-fine/">Diesel drivers could face repair bill or £1,000 fine</a>
-                              <span class="post-date">29th October 2017</span>
-                          </li>
-                      </ul>
-                      <ul>
-                          <li>
-                              Check these out:
-                          </li>
-                          <li>
-                              <a href="<?= $this->serverUrl($this->url('carmodel', ['marque' => 'Kia', 'model' => 'Picanto','modelid' => '5aad14d8c65afe6fa89be359'])) ?>">Kia Picanto £58.48/mo</a>
-                          </li>
-                      </ul>
-                  <div>
-	    	  </div>
-	    </div>
-	</div>	
-
-    <div class="footer">
-        <div class="container">
-
-            <p>
-                &copy; 2009 - <?=date('Y')?> scrappage.co.uk. All rights reserved.
-            </p>
         </div>
-    </div>
+
+        <div class="footer">
+            <div class="container">
+
+                <p>
+                    &copy; 2009 - <?= date('Y') ?> scrappage.co.uk. All rights
+                    reserved.
+                </p>
+            </div>
+        </div>
 
 
-    <?=$this->inlineScript()?>
+        <?= $this->inlineScript() ?>
 </body>
 </html>

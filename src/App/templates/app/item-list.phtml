@@ -1,0 +1,162 @@
+<?php
+declare(strict_types=1);
+
+if (empty($this->itemlist)) {
+    echo "No Car Data Found";
+    return;
+}
+
+$itemlist = $this->itemlist;
+
+$headerline
+    = <<<EOF
+<div class="carheader">Cars For Sale</div>
+EOF;
+
+
+$excludes = [];
+$cardatalines = '';
+
+$navline = '';
+
+$totalItems = $itemlist['_total_items'] ?? '0';
+
+$page = $itemlist['_page'] ?? 1;
+
+$pagec = $itemlist['_page_count'] ?? 1;
+
+
+$displaypage = (string)$page;
+
+$displaypagecount = (string)$pagec;
+
+$prevLink = '';
+if ($page > 1) {
+    $prev = $page - 1;
+    $displayPrev = (string)$prev;
+
+    $prevUrl = $this->serverUrl($this->url('itemlist', [],
+        ['page' => $displayPrev]));
+
+    $prevLink
+        = <<<EOF
+    <a href="$prevUrl">&lt;prev</a>
+EOF;
+
+}
+
+$nextLink = '';
+if ($page < $pagec) {
+    $next = $page + 1;
+    $displayNext = (string)$next;
+    $nextUrl = $this->serverUrl($this->url('itemlist', [],
+        ['page' => $displayNext]));
+    $nextLink
+        = <<<EOF
+    <a href="$nextUrl">next&gt;</a>
+EOF;
+
+
+}
+
+
+$navline
+    = <<<EOF
+<div>
+$prevLink Page $page of $pagec $nextLink
+</div>
+EOF;
+
+
+foreach ($itemlist['_embedded']['item'] as $itemKey => $item) {
+
+    foreach ($item as $field => $val) {
+
+
+        if (!is_string($val)) {
+            continue;
+        }
+
+        $spxitemLink = '';
+
+        switch ($field) {
+
+            case '_id':
+                break;
+
+            case 'id':
+
+                $spxitemUrl = $this->serverUrl($this->url('item',
+                    ['itemid' => $val]));
+
+                break;
+
+            case (in_array($field, $excludes)):
+                break;
+
+
+            case (!is_string($val)):
+                break;
+
+            default:
+
+                $cardatalines
+                    .= <<<EOF
+
+EOF;
+                if (strpos($field, 'price') !== false) {
+                    $val = (float)$val;
+                    $spxmodel_dispprice = money_format('%.2n', $val);
+                    $price_indicative = $val;
+                }
+        }
+
+    }
+
+
+    $extractc = extract($item, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxitem');
+
+    $cardataline
+        = <<<EOF
+    <a href="$spxitemUrl">
+    $spxitem_marque $spxitem_model $spxitem_color $spxitem_doors door 
+    $spxitem_fuel $spxitem_transmission $spxmodel_dispprice $spxitemLink
+    </a>
+EOF;
+
+    $cardatalines
+        .= <<<EOF
+<div>
+$itemKey $cardataline
+</div>
+EOF;
+
+}
+
+$cargrid
+    = <<<EOF
+<div class="caritemgrid">
+EOF;
+
+$cargrid .= $headerline;
+$cargrid .= $cardatalines;
+$cargrid
+    .= <<<EOF
+</div>
+EOF;
+
+
+$cont
+    = <<<EOF
+$navline
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            $cargrid
+        </div>
+    </div>
+</div>
+EOF;
+
+
+echo $cont;

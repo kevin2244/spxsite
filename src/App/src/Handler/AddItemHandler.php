@@ -16,6 +16,7 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Form\FormInterface;
 use function array_intersect_key;
 use GuzzleHttp\Exception\GuzzleException;
+use Zend\Expressive\Session\SessionInterface;
 
 class AddItemHandler implements RequestHandlerInterface
 {
@@ -27,16 +28,21 @@ class AddItemHandler implements RequestHandlerInterface
     private $form;
     private $identHelper;
 
+    /** @var SessionInterface */
+    private $sessionContainer;
+
     public function __construct(
         TemplateRendererInterface $renderer,
         FormInterface $form,
         ClientInterface $spxClient,
         IdentHelper $identHelper
+        //SessionInterface $sessionContainer
     ) {
         $this->renderer = $renderer;
         $this->form = $form;
         $this->spxClient = $spxClient;
         $this->identHelper = $identHelper;
+       // $this->sessionContainer = $sessionContainer;
     }
 
     /**
@@ -44,6 +50,15 @@ class AddItemHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+
+        $session = $request->getAttribute('session');
+
+        $this->sessionContainer = $session;
+
+        $count = $this->sessionContainer->get('count', 0);
+
+        $this->sessionContainer->set('count', $count + 1);
+
         $ih = $this->identHelper;
         $id = $ih()['_id']['$oid'];
 
@@ -110,10 +125,9 @@ class AddItemHandler implements RequestHandlerInterface
             $data['messages'] = $this->form->getMessages();
         }
 
-        // Render and return a response:
         return new HtmlResponse($this->renderer->render(
             'app::add-item',
-            $data // parameters to pass to template
+            $data
         ));
     }
 }

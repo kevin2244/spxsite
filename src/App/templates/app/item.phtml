@@ -1,0 +1,82 @@
+<?php
+declare(strict_types=1);
+
+if (empty($this->itemdata)) {
+    echo "No Car Data Found";
+    return;
+}
+
+$itemdata = $this->itemdata;
+
+$extractc = extract($itemdata, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxitem');
+
+$headerline
+    = <<<EOF
+<div class="carheader">Header Line</div>
+EOF;
+
+
+$excludes = [];
+$cardatalines = '';
+foreach ($itemdata as $field => $val) {
+
+
+    if (!is_string($val)) {
+        continue;
+    }
+
+
+    switch ($field) {
+
+        case '_id':
+            break;
+
+        case (in_array($field, $excludes)):
+            break;
+
+        default:
+
+            $cardatalines
+                .= <<<EOF
+        <div class="cardataline">
+            $field
+        </div>
+        <div class="cardataline">
+            $val
+        </div>
+EOF;
+            if (strpos($field, 'price') !== false) {
+                $val = (float)$val;
+                $spxmodel_dispprice = money_format('%.2n', $val);
+                $price_indicative = $val;
+            }
+    }
+}
+
+$cargrid
+    = <<<EOF
+<div class="cargrid">
+EOF;
+
+$cargrid .= $headerline;
+$cargrid .= $cardatalines;
+$cargrid
+    .= <<<EOF
+</div>
+EOF;
+
+$cont
+    = <<<EOF
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            $cargrid
+        </div>
+        <div class="col-md-4">
+            hpform
+        </div>
+    </div>
+</div>
+EOF;
+
+echo $cont;

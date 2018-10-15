@@ -19,6 +19,6 @@ class AddItemHandlerFactory
             $container->get(AddItemForm::class),
             $container->get(SPXGuzzleClientFactory::class),
             $container->get(IdentHelper::class)
-            );
+        );
     }
 }

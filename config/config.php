@@ -13,6 +13,8 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Zend\Expressive\Session\Ext\ConfigProvider::class,
+    \Zend\Expressive\Session\ConfigProvider::class,
     \Zend\Cache\ConfigProvider::class,
     \Zend\Session\ConfigProvider::class,
     \Zend\I18n\ConfigProvider::class,
