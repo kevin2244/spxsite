@@ -55,6 +55,8 @@
         "zendframework/zend-expressive": "^3.0.1",
         "zendframework/zend-expressive-fastroute": "^3.0",
         "zendframework/zend-expressive-helpers": "^5.0",
+        "zendframework/zend-expressive-session": "^1.1",
+        "zendframework/zend-expressive-session-ext": "^1.2",
         "zendframework/zend-expressive-zendviewrenderer": "^2.0",
         "zendframework/zend-form": "^2.11",
         "zendframework/zend-i18n": "^2.7",
