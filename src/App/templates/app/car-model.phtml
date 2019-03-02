@@ -100,46 +100,12 @@ $deposit = 5000;
 //Or provide estimate based on price/marque/type etc.
 $scrappagediscount = 2000;
 
-$hpform =<<<EOF
-<div id="$paraident" class="$ident marker quotegrid">
-    <div class="quotegridfieldheader">
-        HP Quote Estimate        
-    </div>
-    
-    <div class="quotegridtext">
-        <b><i>STEP 1.</i></b> Adjust inputs as necessary, monthly payments will update instantly.
-            For example if you think you can get a zero interest rate deal enter 0 in the Interest Rate field
-            or if your purchase price is different adjust the price field.
-    </div>    
-    
-    <div class="quotegridfield">Price(£)........</div>
-    <div class="quotegridvalue"><input type="text" class="quoteinput price priceinput $paraident" value="$price_indicative" autocomplete="off"></div>
-    
-    <div class="quotegridfield">Deposit(£)........</div>
-    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput deposit $paraident" value="$deposit" autocomplete="off"></div>
-    
-    <div class="quotegridfield">Scrappage/Trade-In (£)........</div>
-    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput scrappagedisc $paraident" value="$scrappagediscount"></div>
+$data['price_indicative'] = $price_indicative;
+$data['deposit'] = $deposit;
+$data['scrappagediscount'] = $scrappagediscount;
 
-    <div class="quotegridfield">Amount to finance........</div>
-    <div class="quotegridvalue"> <span class="quotedisplay financeamount $paraident">0</span></div>
+$hpform = $this->HpQuoteHelper($data);
 
-    <div class="quotegridfield">No. monthly payments........</div>
-    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput numpayments $paraident" value="48" ></div>
-
-    <div class="quotegridfield">Interest Rate(%)........</div>
-    <div class="quotegridvalue"><input type="text" class="quoteinput spxinput interestrate $paraident" value="5.9"></div>
-    
-    <div class="quotegridfield">Est. Monthly Payment(£).....</div>
-    <div class="quotegridvalue"><span style="color:green; font-weight:bold; font-size:xx-large" class="quotedisplay monthlypayment $paraident">0</span></div>    
-
-    <div class="quotegridtext">
-       <b><i>STEP 2.</i></b> Get it financed at <a href="https://www.paidonresults.net/c/49722/1/1819/0" style="font-size:x-large">Car Finance Deals</a> 
-    </div>
-
-        
-</div>
-EOF;
 
 $cont=<<<EOF
 <div class="container-fluid">

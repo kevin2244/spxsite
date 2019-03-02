@@ -7,50 +7,89 @@ if (empty($this->itemdata)) {
 }
 
 $itemdata = $this->itemdata;
+$itemId = $this->itemid;
 
 $extractc = extract($itemdata, EXTR_PREFIX_ALL | EXTR_OVERWRITE, 'spxitem');
 
 $headerline
     = <<<EOF
-<div class="carheader">Header Line</div>
+<div class="carheader">$spxitem_marque $spxitem_model </div>
 EOF;
 
 
-$excludes = [];
+$excludes = ['_id', 'id', 'sellerId','status'];
 $cardatalines = '';
-foreach ($itemdata as $field => $val) {
 
+$dispitemdata = [];
+
+foreach ($itemdata as $field => $val) {
 
     if (!is_string($val)) {
         continue;
     }
 
-
     switch ($field) {
-
-        case '_id':
-            break;
 
         case (in_array($field, $excludes)):
             break;
 
-        default:
+        case  (strpos($field, 'price') !== false):
+            $val = (float)$val;
+            $spxmodel_dispprice = money_format('%.0n', $val);
+            $price_indicative = $val;
 
-            $cardatalines
-                .= <<<EOF
+            $dispitemdata[$field] = $spxmodel_dispprice;
+
+            break;
+
+        default:
+            $dispitemdata[$field] = $val;
+
+    }
+}
+
+//get array to iterate
+foreach ($dispitemdata as $f => $v) {
+
+
+
+    $itemField = ucfirst(htmlspecialchars($f));
+    $v = htmlspecialchars($v);
+
+
+    if ($f === 'contact_phone') {
+        $cardatalines
+            .= <<<EOF
         <div class="cardataline">
-            $field
+            $itemField
         </div>
-        <div class="cardataline">
-            $val
+        <div id="contactphone" class="cardataline">
+            $v <button id="revealredacted" type="button" class="btn btn-primary">Reveal Number</button> 
         </div>
 EOF;
-            if (strpos($field, 'price') !== false) {
-                $val = (float)$val;
-                $spxmodel_dispprice = money_format('%.2n', $val);
-                $price_indicative = $val;
-            }
     }
+
+    else {
+        $cardatalines
+            .= <<<EOF
+        <div class="cardataline">
+            $itemField
+        </div>
+        <div class="cardataline">
+            $v
+        </div>
+EOF;
+    }
+}
+
+$photos = $this->photos;
+$photo = '';
+
+foreach ($photos as $url) {
+
+$photo .=<<<EOF
+<br /><img src="$url">
+EOF;
 }
 
 $cargrid
@@ -65,18 +104,71 @@ $cargrid
 </div>
 EOF;
 
-$cont
-    = <<<EOF
+$data['price_indicative']   = $price_indicative ?? 0;
+$data['deposit']            = 0;
+$data['scrappagediscount']  = 0;
+
+$hpc = $this->HpQuoteHelper($data);
+
+$cont = <<<EOF
+<div class="navline">
+&nbsp;
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8">
             $cargrid
         </div>
         <div class="col-md-4">
-            hpform
+            $hpc
         </div>
     </div>
 </div>
+
+$photo
+
 EOF;
 
 echo $cont;
+?>
+<script >
+$( document ).ready(function() {
+    $("#revealredacted").click(function() {
+
+        //get photoId
+        //var photoId = $(this).attr('id').substring(6);
+
+
+        $.get("/revealitem/<?=$itemId?>",  function (data, statusText, xhr) {
+
+            //alert('Reveal Request Performed');
+            //alert(xhr.status);
+
+
+        }).always(function(data, textStatus, xhr) {
+
+            //This shows status code eg. 403
+            console.log("textStatus: " + textStatus);
+            //This shows status message eg. Forbidden
+            console.log("STATUS : " + xhr.status);
+
+
+            if (xhr.status === 204) {
+                alert('Please log on to reveal numbers');
+            }
+
+
+            if (xhr.status === 200) {
+                console.log('Got Data' + data.contact_phone);
+
+                //reveal the number...
+                $("#contactphone").text(data.contact_phone);
+
+            }
+
+            //TO-DO after fail/done request.
+            //console.log('Status');
+        });
+    });
+});
+</script>

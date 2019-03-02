@@ -8,6 +8,7 @@ namespace App\Handler;
 
 use App\Helpers\IdentHelper;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -15,8 +16,7 @@ use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Form\FormInterface;
 use function array_intersect_key;
-use GuzzleHttp\Exception\GuzzleException;
-use Zend\Expressive\Session\SessionInterface;
+use function error_log;
 
 class AddItemHandler implements RequestHandlerInterface
 {
@@ -28,21 +28,16 @@ class AddItemHandler implements RequestHandlerInterface
     private $form;
     private $identHelper;
 
-    /** @var SessionInterface */
-    private $sessionContainer;
-
     public function __construct(
         TemplateRendererInterface $renderer,
         FormInterface $form,
         ClientInterface $spxClient,
         IdentHelper $identHelper
-        //SessionInterface $sessionContainer
     ) {
         $this->renderer = $renderer;
         $this->form = $form;
         $this->spxClient = $spxClient;
         $this->identHelper = $identHelper;
-       // $this->sessionContainer = $sessionContainer;
     }
 
     /**
@@ -50,25 +45,24 @@ class AddItemHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
-        $session = $request->getAttribute('session');
-
-        $this->sessionContainer = $session;
-
-        $count = $this->sessionContainer->get('count', 0);
-
-        $this->sessionContainer->set('count', $count + 1);
-
         $ih = $this->identHelper;
         $id = $ih()['_id']['$oid'];
 
         $data = [];
         $renderForm = false;
 
+        $handleform = false;
         if ($request->getMethod() === 'POST') {
-            $data['add_item_success'] = false;
-
             $postData = $request->getParsedBody();
+            $postid = $postData['postid'] ?? null;
+            if ($postid === 'addcar') {
+                $handleform = true;
+            }
+        }
+
+        if ($handleform) {
+
+            $data['add_item_success'] = false;
             $this->form->setData($postData);
 
             if ($this->form->isValid()) {
@@ -82,8 +76,8 @@ class AddItemHandler implements RequestHandlerInterface
                     'transmission',
                     'price',
                     'description',
-
-
+                    'item_location',
+                    'contact_phone'
                 ];
 
                 $newItemData = array_intersect_key($postData, array_flip($itemDataFields));

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Middleware\AuthMiddleware;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\MiddlewareFactory;
-use Zend\Expressive\Session\SessionMiddleware;
 
 
 /**
@@ -58,18 +58,34 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/verify/{token:.*}', App\Handler\VerifyHandler::class, 'verify');
 
     $app->get('/addcar', [
-        SessionMiddleware::class,
+        AuthMiddleware::class,
+        //SessionMiddleware::class,
         App\Handler\AddItemHandler::class
         ],
         'additem'
     );
 
     $app->post('/addcar', [
-        SessionMiddleware::class,
+        AuthMiddleware::class,
+        //SessionMiddleware::class,
         App\Handler\AddItemHandler::class
         ],
         'additem-post');
 
     $app->get('/item/{itemid:.*}', App\Handler\ItemHandler::class, 'item');
+    $app->get('/removeitem/{itemid:.*}', App\Handler\RemoveItemHandler::class, 'removeitem');
+
+    $app->get('/revealitem/{itemid:.*}', [ App\Handler\RevealItemHandler::class], 'revealitem');
+
+    $app->get('/edititem/{itemid:.*}', [AuthMiddleware::class, App\Handler\EditItemHandler::class], 'edititem');
+    $app->post('/edititem/{itemid:.*}', [AuthMiddleware::class, App\Handler\EditItemHandler::class], 'edititempostphoto');
+
     $app->get('/itemlist', App\Handler\ItemListHandler::class, 'itemlist');
+    $app->get('/myitemlist', [AuthMiddleware::class, App\Handler\MyItemListHandler::class], 'myitemlist');
+
+    $app->post('/addphotos', [AuthMiddleware::class, App\Handler\AddPhotosFormHandler::class], 'addphotos');
+
+
+    $app->get('/removephoto/itemid/{itemid:.*}/photoid/{photoid:.*}', [AuthMiddleware::class, App\Handler\RemovePhotoHandler::class], 'removephoto');
+
 };

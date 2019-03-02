@@ -10,6 +10,7 @@ namespace App;
 
 use App\Handler\ItemHandlerFactory;
 use App\Handler\ItemListHandlerFactory;
+use App\Handler\RemoveItemHandlerFactory;
 use Zend\Authentication\AuthenticationService;
 
 /**
@@ -56,9 +57,14 @@ class ConfigProvider
                 Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
                 Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
                 Handler\RegistrationHandler::class => Handler\RegistrationHandlerFactory::class,
+                Handler\EditItemHandler::class => Handler\EditItemHandlerFactory::class,
+                Handler\MyItemListHandler::class => Handler\MyItemListHandlerFactory::class,
+                Handler\RemovePhotoHandler::class => Handler\RemovePhotoHandlerFactory::class,
                 Forms\SearchForm::class => Forms\SearchFormFactory::class,
                 Forms\RegistrationForm::class => Forms\RegistrationFormFactory::class,
                 Forms\AddItemForm::class => Forms\AddItemFormFactory::class,
+                Forms\EditItemForm::class => Forms\EditItemFormFactory::class,
+                Forms\AddPhotosForm::class => Forms\AddPhotosFormFactory::class,
                 Model\SPXGuzzleClientFactory::class => Model\SPXGuzzleClientFactory::class,
                 Auth\AuthAdapter::class => Auth\AuthAdapterFactory::class,
                 AuthenticationService::class => Auth\AuthenticationServiceFactory::class,
@@ -66,7 +72,8 @@ class ConfigProvider
                 Handler\LogOffHandler::class => Handler\LogOffHandlerFactory::class,
                 Helpers\IdentHelper::class => Helpers\IdentHelperFactory::class,
                 Handler\ItemListHandler::class => ItemListHandlerFactory::class,
-                Handler\ItemHandler::class => ItemHandlerFactory::class
+                Handler\ItemHandler::class => ItemHandlerFactory::class,
+                Handler\RemoveItemHandler::class => RemoveItemHandlerFactory::class
             ],
         ];
     }

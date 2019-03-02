@@ -14,6 +14,7 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\I18n\Validator\Alnum;
 use Zend\Validator\ValidatorChain;
 
+
 class ItemHandler implements RequestHandlerInterface
 {
     /**
@@ -23,7 +24,6 @@ class ItemHandler implements RequestHandlerInterface
 
     /** @var ClientInterface */
     private $spxClient;
-
 
     public function __construct(
         TemplateRendererInterface $renderer,
@@ -38,7 +38,6 @@ class ItemHandler implements RequestHandlerInterface
      */
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-
         $itemId = $request->getAttribute('itemid');
 
         $inputValidatorChain = new ValidatorChain();
@@ -58,16 +57,29 @@ class ItemHandler implements RequestHandlerInterface
             );
         }
 
+        //redact contact information, e.g. phone number
+        $itemData['contact_phone'] = 'REDACTED';
+
+
+        try {
+            $photoData = json_decode($this->spxClient->request('GET', "edit-car-photos/id/$itemId")->getBody()->getContents(), true);
+        } catch (GuzzleException $e) {
+            $photoData = [];
+            error_log(
+                'GuzzleException' . $e->getMessage(),
+                E_USER_ERROR
+            );
+        }
 
         $data = [];
+        $data['itemid'] = $itemId;
         $data['itemdata'] = $itemData;
         $data['modelid'] = $itemId;
+        $data['photos'] = $photoData;
 
-
-        // Render and return a response:
         return new HtmlResponse($this->renderer->render(
             'app::item',
-            $data // parameters to pass to template
+            $data
         ));
     }
 }

@@ -35,7 +35,7 @@ if ($page > 1) {
     $prev = $page - 1;
     $displayPrev = (string)$prev;
 
-    $prevUrl = $this->serverUrl($this->url('itemlist', [],
+    $prevUrl = $this->serverUrl($this->url('myitemlist', [],
         ['page' => $displayPrev]));
 
     $prevLink
@@ -49,7 +49,7 @@ $nextLink = '';
 if ($page < $pagec) {
     $next = $page + 1;
     $displayNext = (string)$next;
-    $nextUrl = $this->serverUrl($this->url('itemlist', [],
+    $nextUrl = $this->serverUrl($this->url('myitemlist', [],
         ['page' => $displayNext]));
     $nextLink
         = <<<EOF
@@ -60,7 +60,8 @@ EOF;
 }
 
 
-$navline = <<<EOF
+$navline
+    = <<<EOF
 <div class="navline">
 $prevLink Page $page of $pagec $nextLink
 </div>
@@ -85,8 +86,10 @@ foreach ($itemlist['_embedded']['item'] as $itemKey => $item) {
 
             case 'id':
 
-                $spxitemUrl = $this->serverUrl($this->url('item',
+                $spxitemUrl = $this->serverUrl($this->url('edititem',
                     ['itemid' => $val]));
+
+                $itemId = $val;
 
                 break;
 
@@ -117,10 +120,15 @@ EOF;
 
     $cardataline
         = <<<EOF
+    <span id = "del-$itemId" class="removeitem">🗑x</span></a>
+    <span id="removed-$itemId" style="display: none">REMOVED</span>
     <a href="$spxitemUrl">
     $spxitem_marque $spxitem_model $spxitem_color $spxitem_doors door 
     $spxitem_fuel $spxitem_transmission $spxmodel_dispprice $spxitemLink
     </a>
+
+    
+
 EOF;
 
     $cardatalines
@@ -145,19 +153,52 @@ $cargrid
 EOF;
 
 
-$cont = <<<EOF
-<div style="margin-top: 10px;">
+$cont
+    = <<<EOF
 $navline
-</div>
-<div class="container-fluid" style="margin-top: 10px;">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             $cargrid
         </div>
     </div>
 </div>
-
 EOF;
 
 
 echo $cont;
+?>
+<script>
+    $(document).ready(function () {
+
+
+
+
+        $("[id^='del']").click(function() {
+
+
+            //get Item ID
+            let itemId = $(this).attr('id').substring(4);
+
+            //modal!?
+            alert('Delete ' + itemId);
+
+            //delete Item
+            $.get("/removeitem/" + itemId, function() {
+
+            }).always(function(data, textStatus, xhr) {
+
+                //This shows status code eg. 403
+                console.log("error" + textStatus);
+
+                //This shows status message eg. Forbidden
+                console.log("STATUS: " + xhr.status);
+
+                if (xhr.status === 200) {
+                    console.log('200 Item Removed.');
+                    $("#removed-" + itemId).attr('style', 'default');
+                }
+            });
+        });
+    });
+</script>

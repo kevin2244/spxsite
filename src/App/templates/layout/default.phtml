@@ -32,9 +32,10 @@ $this->inlineScript()
     <?= $this->headLink() ?>
     <style>
         body {
-            padding-top: 70px;
+            padding-top: 100px;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 <header>
@@ -70,11 +71,23 @@ $this->inlineScript()
                             Scrappage Explained
                         </a>
                     </li>
-                    <?php if ($this->ToggleSecondsHelper()): ?>
                         <li class="nav-item">
                             <a href="<?= $this->url('itemlist') ?>"
                                class="nav-link">
                                 Second Hand
+                            </a>
+                        </li>
+                    <?php if ($this->ToggleSecondsHelper()): ?>
+                        <li class="nav-item">
+                            <a href="<?= $this->url('additem') ?>"
+                               class="nav-link">
+                                Sell Car
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= $this->url('myitemlist') ?>"
+                               class="nav-link">
+                                My Cars
                             </a>
                         </li>
                     <?php endif; ?>
@@ -84,7 +97,7 @@ $this->inlineScript()
                                href="#" role="button" id="dropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true"
                                aria-expanded="false">
-                                New Cars
+                                New Car <br />Prices
                             </a>
 
                             <div class="dropdown-menu"
@@ -227,18 +240,19 @@ $this->inlineScript()
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="footer">
-            <div class="container">
+    <div style="position: absolute; bottom: 80px;"><!--Page x/y--></div>
 
-                <p>
-                    &copy; 2009 - <?= date('Y') ?> scrappage.co.uk. All rights
-                    reserved.
-                </p>
-            </div>
-        </div>
+    <div class="footer">
 
 
-        <?= $this->inlineScript() ?>
+            <p>
+                &copy; 2009 - <?= date('Y') ?> scrappage.co.uk. All rights
+                reserved.
+            </p>
+    </div>
+</div>
 </body>
+        <?= $this->inlineScript() ?>
 </html>

@@ -35,6 +35,18 @@ class AddItemForm extends Form
         ]);
 
         $this->add([
+            'name'    => 'item_location',
+            'options' => ['label' => 'Vehicle location (City/Town/Area)'],
+            'type'    => 'text',
+        ]);
+
+        $this->add([
+            'name'    => 'contact_phone',
+            'options' => ['label' => 'Contact Phone Number'],
+            'type'    => 'text',
+        ]);
+
+        $this->add([
             'name'    => 'color',
             'options' => ['label' => 'Colour',],
             'type'    => 'text',
@@ -96,10 +108,18 @@ class AddItemForm extends Form
         ]);
 
         $this->add([
+            'name' => 'postid',
+            'type' => 'hidden',
+            'attributes' => [
+                'value' => 'addcar',
+            ],
+        ]);
+
+        $this->add([
             'name' => 'send',
             'type'  => 'Submit',
             'attributes' => [
-                'value' => 'Go',
+                'value' => 'Add Car',
             ],
         ]);
 
@@ -110,19 +130,19 @@ class AddItemForm extends Form
         $marqueFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
-            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'-]+$/i']));
+            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'\-–—]+$/i']));
 
         $modelFilter = new Input('model');
         $modelFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
-            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'-]+$/i']));
+            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9    ,.\'\-–—]+$/i']));
 
         $colorFilter = new Input('color');
         $colorFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
-            ->attach(new I18n\Validator\Alnum());
+            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'\-–—]+$/i']));
 
         $doorsFilter = new Input('doors');
         $doorsFilter->getValidatorChain()
@@ -142,12 +162,25 @@ class AddItemForm extends Form
             ->attach(new Validator\StringLength(['min' => 1, 'max => 6']))
             ->attach(new Validator\Digits());
 
+        $itemLocationFilter = new Input('item_location');
+        $itemLocationFilter->getValidatorChain()
+            ->attach(new Validator\NotEmpty())
+            ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
+            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'\-–—]+$/i']));
+
+        $contactPhoneFilter = new Input('contact_phone');
+        $contactPhoneFilter->getValidatorChain()
+            ->attach(new Validator\NotEmpty())
+            ->attach(new Validator\StringLength(['min' => 1, 'max => 32']))
+            ->attach(new Validator\Regex(['pattern' =>'/^[0-9 \+]+$/i']));
+
+        //this should be any string, no tags
         $descriptionFilter = new Input('description');
         $descriptionFilter->setRequired(false);
         $descriptionFilter->getValidatorChain()
             //->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['min' => 1, 'max => 1024']))
-            ->attach(new Validator\Regex(['pattern' => '/^[A-Za-z0-9- ]+$/']));
+            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9    ,.\'\-–—£\$\(\)]+$/i']));
 
 
         $inputFilter->add($marqueFilter)
@@ -156,7 +189,9 @@ class AddItemForm extends Form
             ->add($doorsFilter)
             ->add($fuelFilter)
             ->add($priceFilter)
-            ->add($descriptionFilter);
+            ->add($descriptionFilter)
+            ->add($itemLocationFilter)
+            ->add($contactPhoneFilter);
 
 
 

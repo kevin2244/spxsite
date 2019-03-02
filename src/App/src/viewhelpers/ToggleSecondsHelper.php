@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\viewhelpers;
 
+use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class ToggleSecondsHelper extends AbstractHelper
@@ -17,13 +18,24 @@ class ToggleSecondsHelper extends AbstractHelper
     /** @var bool */
     private $showSeconds;
 
-    public function __construct($showSecoonds)
-    {
-        $this->showSeconds = $showSecoonds;
+    /** @var AuthenticationServiceInterface */
+    private $authenticationService;
+
+    public function __construct($showSeconds,
+        AuthenticationServiceInterface $authenticationService
+    ) {
+        $this->authenticationService = $authenticationService;
+        $this->showSeconds = $showSeconds;
     }
 
     public function __invoke()
     {
-        return $this->showSeconds;
+        $ret = false;
+
+        if ($this->authenticationService->hasIdentity() && ($this->showSeconds === true)) {
+            $ret = true;
+        }
+
+        return $ret;
     }
 }
