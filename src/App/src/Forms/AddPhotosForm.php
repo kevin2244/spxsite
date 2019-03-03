@@ -21,6 +21,8 @@ class AddPhotosForm extends Form
     {
         parent::__construct();
 
+        $imageUploadDir = $options['image_upload_dir'];
+
         $this->add([
             'name' => 'image1',
             'options' => ['label' => 'Find Car Photo'],
@@ -53,7 +55,7 @@ class AddPhotosForm extends Form
         $fileFilter->getFilterChain()->attachByName(
             'filerenameupload',
             [
-                'target'    => '/home/kevin/tmpup/some-image.jpeg',
+                'target'    => $imageUploadDir .'/some-image.jpeg',
                 'randomize' => true,
             ]
         );

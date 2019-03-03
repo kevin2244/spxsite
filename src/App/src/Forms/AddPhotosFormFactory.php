@@ -14,6 +14,10 @@ class AddPhotosFormFactory
 {
     public function __invoke(ContainerInterface $container) : AddPhotosForm
     {
-        return new AddPhotosForm();
+        $imageUploadDir = $container->get('config')['image_upload_dir'];
+        return new AddPhotosForm(
+            null,
+            ['image_upload_dir' => $imageUploadDir]
+        );
     }
 }
