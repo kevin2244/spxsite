@@ -12,12 +12,15 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'factories' => [
-            App\Handler\AddItemHandler::class                   => App\Handler\AddItemHandlerFactory::class,
-            App\Handler\HirePurchaseHP::class                   => App\Handler\HirePurchaseHPFactory::class,
-            App\Handler\LogonHandler::class                     => App\Handler\LogonHandlerFactory::class,
+            App\Handler\AddItemHandler::class => App\Handler\AddItemHandlerFactory::class,
+            App\Handler\AddPhotosFormHandler::class => App\Handler\AddPhotosFormHandlerFactory::class,
+            App\Handler\HirePurchaseHP::class => App\Handler\HirePurchaseHPFactory::class,
+            App\Handler\LogonHandler::class => App\Handler\LogonHandlerFactory::class,
+            App\Handler\RemovePhotoHandler::class => App\Handler\RemovePhotoHandlerFactory::class,
+            App\Handler\RevealItemHandler::class => App\Handler\RevealItemHandlerFactory::class,
             App\Handler\ScrappageSchemesExplainedHandler::class => App\Handler\ScrappageSchemesExplainedHandlerFactory::class,
-            App\Handler\Search::class                           => App\Handler\SearchFactory::class,
-            App\Handler\VerifyHandler::class                    => App\Handler\VerifyHandlerFactory::class,
+            App\Handler\Search::class => App\Handler\SearchFactory::class,
+            App\Handler\VerifyHandler::class => App\Handler\VerifyHandlerFactory::class,
         ],
     ],
 ];
