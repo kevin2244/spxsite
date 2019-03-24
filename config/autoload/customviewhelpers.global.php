@@ -13,7 +13,12 @@ use App\viewhelpers\MarqueListFactory;
 use App\viewhelpers\RouteHelper;
 use App\viewhelpers\RouteHelperFactory;
 use App\viewhelpers\TogggleSecondsHelperFactory;
+use App\viewhelpers\ToggleAuthHelper;
+use App\viewhelpers\ToggleAuthHelperFactory;
+use App\viewhelpers\ToggleSchemesHelper;
+use App\viewhelpers\ToggleSchemesHelperFactory;
 use App\viewhelpers\ToggleSecondsHelper;
+
 
 
 return [
@@ -26,7 +31,9 @@ return [
             'IdentHelper' => IdentHelper::class,
             'LogOnOffToggleHelper' => LogOnOffToggleHelper::class,
             'ToggleSecondsHelper' => ToggleSecondsHelper::class,
-            'HpQuoteHelper' => HpQuoteHelper::class
+            'HpQuoteHelper' => HpQuoteHelper::class,
+            'ToggleAuthHelper' => ToggleAuthHelper::class,
+            'ToggleSchemesHelper' => ToggleSchemesHelper::class
         ],
         'factories' => [
             MarqueList::class => MarqueListFactory::class,
@@ -34,7 +41,9 @@ return [
             IdentHelper::class => IdentHelperFactory::class,
             LogOnOffToggleHelper::class => LogOnOffToggleHelperFactory::class,
             ToggleSecondsHelper::class => TogggleSecondsHelperFactory::class,
-            HpQuoteHelper::class => HpQuoteHelperFactory::class
+            HpQuoteHelper::class => HpQuoteHelperFactory::class,
+            ToggleAuthHelper::class => ToggleAuthHelperFactory::class,
+            ToggleSchemesHelper::class => ToggleSchemesHelperFactory::class
         ]
     ]
 ];

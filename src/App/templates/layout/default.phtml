@@ -68,22 +68,22 @@ $this->inlineScript()
                     <li class="nav-item">
                         <a href="<?= $this->url('scrappage-schemes-explained') ?>"
                            class="nav-link">
-                            Scrappage Explained
+                            Scrappage Schemes
                         </a>
                     </li>
                         <li class="nav-item">
                             <a href="<?= $this->url('itemlist') ?>"
                                class="nav-link">
-                                Second Hand
+                                View Cars
                             </a>
                         </li>
-                    <?php if ($this->ToggleSecondsHelper()): ?>
                         <li class="nav-item">
                             <a href="<?= $this->url('additem') ?>"
                                class="nav-link">
                                 Sell Car
                             </a>
                         </li>
+                    <?php if ($this->ToggleSecondsHelper()): ?>
                         <li class="nav-item">
                             <a href="<?= $this->url('myitemlist') ?>"
                                class="nav-link">
@@ -91,7 +91,7 @@ $this->inlineScript()
                             </a>
                         </li>
                     <?php endif; ?>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <div class="dropdown show">
                             <a class="btn btn-secondary dropdown-toggle"
                                href="#" role="button" id="dropdownMenuLink"
@@ -105,9 +105,8 @@ $this->inlineScript()
                                 <?php echo $this->MarqueList() ?>
                             </div>
                         </div>
-                    </li>
-
-
+                    </li>-->
+                    <?php if ($this->ToggleSchemesHelper()): ?>
                     <li class="nav-item">
                         <div class="dropdown show">
                             <a class="btn btn-secondary dropdown-toggle"
@@ -126,6 +125,7 @@ $this->inlineScript()
                             </div>
                         </div>
                     </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                         <div class="dropdown show">
                             <a class="btn btn-secondary dropdown-toggle"
@@ -152,30 +152,49 @@ $this->inlineScript()
                             Blog
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a href="<?= $this->serverUrl('/search') ?>"
                            class="nav-link">
                             Search
                         </a>
-                    </li>
+                    </li>-->
+
+                    <?php if($this->ToggleAuthHelper()): ?>
+                    <?php
+                        error_log('First Name: '.$this->IdentHelper()['firstname']);
+
+                        $initial = strtoupper($this->IdentHelper()['firstname'][0])
+                        ?>
                     <li class="nav-item">
-                        <?= $this->LogOnOffToggleHelper() ?>
+                            <div class="dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle"
+                                   href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
+                                    <?=$initial?>'s Account
+                                </a>
+
+                                <div class="dropdown-menu"
+                                     aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item"
+                                       href="<?= $this->serverUrl($this->url('log-off')) ?>">Log Off</a>
+                                </div>
+                            </div>
                     </li>
-                    <li class="nav-item">
-                            <span class="navbar-text">
-                                <?php
-                                echo $this->IdentHelper()['firstname'] .
-                                    ' ' .
-                                    $this->IdentHelper()['lastname'];
-                                ?>
-                            </span>
-                    </li>
-                    <li class="nav-item">
+                    <?php else: ?>
+                    <li>
                         <a href="<?= $this->serverUrl($this->url('registration')) ?>"
                            class="nav-link">
                             Register
                         </a>
-                    </li>
+                     </li>
+                     <li class="nav-item">
+                         <a href="<?= $this->serverUrl($this->url('log-on')) ?>"
+                               class="nav-link">
+                             Log On
+                         </a>
+                     </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -184,6 +203,8 @@ $this->inlineScript()
 
 <div class="container-fluid">
     <div class="row">
+
+        <?php if ($rn === 'home'):  ?>
         <div class="col-md-10">
             <?= $this->content ?>
         </div>
@@ -240,6 +261,11 @@ $this->inlineScript()
                 </div>
             </div>
         </div>
+        <?php else: ?>
+        <div class="col-md-12">
+            <?= $this->content ?>
+        </div>
+        <?php endif; ?>
     </div>
 
     <div style="position: absolute; bottom: 80px;"><!--Page x/y--></div>
@@ -249,7 +275,7 @@ $this->inlineScript()
 
             <p>
                 &copy; 2009 - <?= date('Y') ?> scrappage.co.uk. All rights
-                reserved.
+                reserved. <img src="/images/zf3.png">
             </p>
     </div>
 </div>

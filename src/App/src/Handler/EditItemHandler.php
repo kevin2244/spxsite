@@ -11,6 +11,7 @@ use App\Forms\EditItemForm;
 use App\Helpers\IdentHelper;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -77,6 +78,8 @@ class EditItemHandler implements RequestHandlerInterface
         $inputValidatorChain = new ValidatorChain();
         $inputValidatorChain->attach(new Alnum());
 
+        $messages = [];
+
         if (!$inputValidatorChain->isValid($itemId)) {
             return new HtmlResponse($this->renderer->render('error::404'), 404);
         }
@@ -103,10 +106,46 @@ class EditItemHandler implements RequestHandlerInterface
                     true);
             } catch (GuzzleException $e) {
                 $photoData = [];
+                /*
                 error_log(
-                    'GuzzleException' . $e->getMessage(),
+                    'GuzzleException ' . $e->getMessage(),
                     E_USER_ERROR
                 );
+                */
+                if ($e instanceof RequestException) {
+
+                    // replace the original message (possibly truncated),
+                    // with the full text of the response body.
+                    if (!empty($e->getResponse())) {
+                        $message = str_replace(
+                            rtrim($e->getMessage()),
+                            (string)$e->getResponse()->getBody(),
+                            (string)$e
+                        );
+                    } else {
+                        $message = $e->getMessage()
+                            . $e->getFile()
+                            . $e->getLine();
+                    }
+                    error_log('Guzzle RequestException: ' .
+                        $message, E_USER_ERROR);
+                } else {
+                    error_log('GuzzleException: '
+                        . $e->getMessage()
+                        . $e->getFile()
+                        . $e->getLine(), E_USER_ERROR);
+                }
+
+
+
+
+
+
+
+
+
+
+
             }
         }
 
@@ -241,6 +280,7 @@ class EditItemHandler implements RequestHandlerInterface
         $data['form'] = $this->addPhotosForm;
         $data['edititemform'] = $this->editItemForm;
         $data['upStatusMessage'] = $upStatusMessage;
+        $data['messages'] = $messages;
 
         // Render and return a response:
         return new HtmlResponse($this->renderer->render(

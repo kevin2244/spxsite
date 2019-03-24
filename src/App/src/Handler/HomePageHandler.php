@@ -40,6 +40,7 @@ class HomePageHandler implements RequestHandlerInterface
 
         //check Ident
         $data['ident'] = $request->getAttribute(AuthMiddleware::class);
+
         return new HtmlResponse($this->template->render('app::home-page', $data));
     }
 }
