@@ -11,7 +11,6 @@ namespace App\viewhelpers;
 
 use Zend\Authentication\AuthenticationServiceInterface;
 
-
 class LogOnOffToggleHelper
 {
     private $serverUrl;
@@ -31,8 +30,6 @@ class LogOnOffToggleHelper
     public function __invoke()
     {
         if ($this->authenticationService->hasIdentity()) {
-
-
             $helper=$this->serverUrl;
             $url=$this->url;
             $logoff = $helper($url('log-off'));
@@ -42,9 +39,7 @@ class LogOnOffToggleHelper
             Log Off:
             </a>
 EOF;
-        }
-        else {
-
+        } else {
             $helper=$this->serverUrl;
             $url=$this->url;
             $logon = $helper($url('log-on'));

@@ -32,7 +32,6 @@ class Phone extends Element implements InputProviderInterface
             $this->validator->attach((new Validator\NotEmpty()))
                 ->attach(new Validator\StringLength(['min' => 1, 'max => 32']))
                 ->attach(new Validator\Regex(['pattern' =>'/^[0-9 \+]+$/i']));
-
         }
         return $this->validator;
     }

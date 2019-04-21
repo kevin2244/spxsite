@@ -32,7 +32,6 @@ class Price extends Element implements InputProviderInterface
             $this->validator->attach((new Validator\NotEmpty()))
                 ->attach(new Validator\StringLength(['min' => 1, 'max => 6']))
                 ->attach(new Validator\Digits());
-
         }
         return $this->validator;
     }

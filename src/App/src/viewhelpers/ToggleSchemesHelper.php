@@ -16,7 +16,8 @@ class ToggleSchemesHelper extends AbstractHelper
     /** @var bool */
     private $showSchemes;
 
-    public function __construct($showSchemes) {
+    public function __construct($showSchemes)
+    {
         $this->showSchemes = $showSchemes;
     }
 

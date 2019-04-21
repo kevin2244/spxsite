@@ -14,7 +14,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-
 class ScrappageSchemesExplainedHandler implements RequestHandlerInterface
 {
     private $template;

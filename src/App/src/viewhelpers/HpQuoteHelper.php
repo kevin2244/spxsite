@@ -18,7 +18,6 @@ class HpQuoteHelper extends AbstractHelper
 
     public function __construct()
     {
-
     }
 
     public function __invoke(array $data)

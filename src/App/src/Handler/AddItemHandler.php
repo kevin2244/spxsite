@@ -60,7 +60,6 @@ class AddItemHandler implements RequestHandlerInterface
         }
 
         if ($handleform) {
-
             error_log('Form Post Data: '.print_r($data, true));
 
             $data['add_item_success'] = false;

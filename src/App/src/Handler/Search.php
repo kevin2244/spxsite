@@ -8,14 +8,14 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use GuzzleHttp;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Form\FormInterface;
-use GuzzleHttp;
-use GuzzleHttp\Exception\GuzzleException;
 
 class Search implements RequestHandlerInterface
 {
@@ -29,8 +29,8 @@ class Search implements RequestHandlerInterface
     public function __construct(
         TemplateRendererInterface $renderer,
         FormInterface $form,
-        GuzzleHttp\ClientInterface $spxClient)
-    {
+        GuzzleHttp\ClientInterface $spxClient
+    ) {
         $this->renderer = $renderer;
         $this->form = $form;
         $this->spxClient = $spxClient;
@@ -55,14 +55,18 @@ class Search implements RequestHandlerInterface
 
                 //send to API..
                 try {
-                    $searchresult = $this->spxClient->request('POST',
-                        'search', ['json' => $postData])->getBody()->getContents();
+                    $searchresult = $this->spxClient->request(
+                        'POST',
+                        'search',
+                        ['json' => $postData]
+                    )->getBody()->getContents();
                 } catch (GuzzleException $e) {
-                    error_log('Caught GuzzleException' . $e->getMessage(),
-                        E_USER_ERROR);
+                    error_log(
+                        'Caught GuzzleException' . $e->getMessage(),
+                        E_USER_ERROR
+                    );
                 }
-            }
-            else {
+            } else {
                 $data['success'] = 'Not Valid';
                 $data['messages'] = $this->form->getMessages();
             }

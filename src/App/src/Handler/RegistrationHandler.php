@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use GuzzleHttp;
 use GuzzleHttp\Exception\GuzzleException;
+use Mailgun\Mailgun;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -17,8 +19,6 @@ use Zend\Expressive\Helper\ServerUrlHelper;
 use Zend\Expressive\Helper\UrlHelper;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Form\FormInterface;
-use GuzzleHttp;
-use Mailgun\Mailgun;
 
 class RegistrationHandler implements RequestHandlerInterface
 {

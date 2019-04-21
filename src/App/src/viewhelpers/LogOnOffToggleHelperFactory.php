@@ -12,7 +12,6 @@ use Psr\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\View\HelperPluginManager;
 
-
 class LogOnOffToggleHelperFactory
 {
     public function __invoke(ContainerInterface $container)

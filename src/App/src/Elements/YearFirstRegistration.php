@@ -13,7 +13,7 @@ use Zend\InputFilter\InputProviderInterface;
 use Zend\Validator;
 use Zend\Validator\ValidatorInterface;
 
-class  YearFirstRegistration extends Element\Select implements InputProviderInterface
+class YearFirstRegistration extends Element\Select implements InputProviderInterface
 {
 
     public function __construct($name = null, array $options = [])
@@ -30,13 +30,13 @@ class  YearFirstRegistration extends Element\Select implements InputProviderInte
             $yearStart = 1890;
             $yearEnd= 2019;
 
-            for ($y = $yearStart; $y <= $yearEnd; $y++) {
-                $yearOptions[(string) $y] = (string)$y;
-            }
+        for ($y = $yearStart; $y <= $yearEnd; $y++) {
+            $yearOptions[(string) $y] = (string)$y;
+        }
 
             krsort($yearOptions);
 
-            $this->setValueOptions( $yearOptions);
+            $this->setValueOptions($yearOptions);
     }
 
     protected $label = 'Year First Registration';

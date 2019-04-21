@@ -46,7 +46,7 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
                 Model\MarqueList::class => Model\MarqueList::class,
                 Forms\LogonForm::class => Forms\LogonForm::class,
-                Library\csprng::class => Library\csprng::class
+                Library\Csprng::class => Library\Csprng::class
             ],
             'factories'  => [
 
@@ -56,7 +56,8 @@ class ConfigProvider
                 Handler\CarModelsHandler::class  => Handler\CarModelsHandlerFactory::class,
                 Handler\AboutHandler::class => Handler\AboutHandlerFactory::class,
                 Handler\CarFinanceHandler::class => Handler\CarFinanceHandlerFactory::class,
-                Handler\ScrappageSchemesExplainedHandler::class => Handler\ScrappageSchemesExplainedHandlerFactory::class,
+                Handler\ScrappageSchemesExplainedHandler::class =>
+                    Handler\ScrappageSchemesExplainedHandlerFactory::class,
                 Handler\RegistrationHandler::class => Handler\RegistrationHandlerFactory::class,
                 Handler\EditItemHandler::class => Handler\EditItemHandlerFactory::class,
                 Handler\MyItemListHandler::class => Handler\MyItemListHandlerFactory::class,

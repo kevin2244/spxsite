@@ -26,9 +26,9 @@ class CarModelsHandler implements RequestHandlerInterface
     private $spxClient;
 
     public function __construct(
+        GuzzleHttp\ClientInterface $spxClient,
         Template\TemplateRendererInterface $template = null,
-        $marquemap = [],
-        GuzzleHttp\ClientInterface $spxClient
+        $marquemap = []
     ) {
         $this->template  = $template;
         $this->marquemap = $marquemap;
@@ -44,18 +44,22 @@ class CarModelsHandler implements RequestHandlerInterface
         );
 
         if (!$inputMarqueValidatorChain->isValid($marquerq)) {
-            return new HtmlResponse($this->template->render('error::404'), 404);
+            return new HtmlResponse(
+                $this->template->render('error::404'),
+                404
+            );
         }
 
         $marqueNameMap = array_flip($this->marquemap);
 
         if (!empty($marqueNameMap[$marquerq])) {
-
             $marqueKeyName = $marqueNameMap[$marquerq];
             $marqueName = $marquerq;
         } else {
-
-            return new HtmlResponse($this->template->render('error::404'), 404);
+            return new HtmlResponse(
+                $this->template->render('error::404'),
+                404
+            );
         }
 
         $modelrq = $request->getAttribute('model');
@@ -66,14 +70,15 @@ class CarModelsHandler implements RequestHandlerInterface
         //or Cee'd
         $runModelValidation = false;
         if ($runModelValidation) {
-
             $inputModelValidatorChain = new ValidatorChain();
             $inputModelValidatorChain->attach(
                 new Regex(['pattern' => '/^[[:alnum:]-]+$/u'])
             );
             if (!$inputModelValidatorChain->isValid($modelrq)) {
-
-                return new HtmlResponse($this->template->render('error::404'), 404);
+                return new HtmlResponse(
+                    $this->template->render('error::404'),
+                    404
+                );
             }
         }
 
@@ -91,10 +96,18 @@ class CarModelsHandler implements RequestHandlerInterface
         $data = [];
 
         try {
-            $cardata = json_decode($this->spxClient->request('GET', "marque/$marqueKeyName/model/$model")->getBody()->getContents(), true);
+            $cardata = json_decode(
+                $this->spxClient->request(
+                    'GET',
+                    "marque/$marqueKeyName/model/$model"
+                )->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
-            error_log('GuzzleException' . $e->getMessage(),
-                E_USER_ERROR);
+            error_log(
+                'GuzzleException' . $e->getMessage(),
+                E_USER_ERROR
+            );
             $cardata = [];
         }
 

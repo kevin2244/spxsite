@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Library;
 
-class csprng
+class Csprng
 {
     /**
      * Generate a random token

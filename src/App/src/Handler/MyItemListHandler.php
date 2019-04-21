@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-
 use App\Helpers\IdentHelper;
+use GuzzleHttp;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
@@ -68,22 +68,26 @@ class MyItemListHandler implements RequestHandlerInterface
             );
         } catch (GuzzleException $e) {
             $itemList = [];
-
-            if (!empty($e->getResponse())) {
-                $message = str_replace(
-                    rtrim($e->getMessage()),
-                    (string)$e->getResponse()->getBody(),
-                    (string)$e
-                );
+            if ($e instanceof GuzzleHttp\Exception\RequestException) {
+                // replace the original message (possibly truncated),
+                // with the full text of the response body.
+                if (!empty($e->getResponse())) {
+                    $message = str_replace(
+                        rtrim($e->getMessage()),
+                        (string)$e->getResponse()->getBody(),
+                        (string)$e
+                    );
+                } else {
+                    $message = $e->getMessage();
+                }
+                error_log('Guzzle RequestException: ' .
+                    $message, E_USER_ERROR);
             } else {
-                $message = $e->getMessage();
+                error_log('GuzzleException: '
+                    . $e->getMessage()
+                    . $e->getFile()
+                    . $e->getLine(), E_USER_ERROR);
             }
-
-
-            error_log(
-                'GuzzleException' . $message,
-                E_USER_ERROR
-            );
         }
 
         $data['itemlist'] = $itemList;

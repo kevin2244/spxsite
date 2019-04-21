@@ -26,4 +26,3 @@ class IdentHelper extends AbstractHelper
         return $this->authenticationService->getIdentity();
     }
 }
-

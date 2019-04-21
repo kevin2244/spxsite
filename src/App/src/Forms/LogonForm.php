@@ -11,8 +11,8 @@ namespace App\Forms;
 
 use Zend\Form\Element;
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Input;
+use Zend\InputFilter\InputFilter;
 use Zend\Validator;
 
 class LogonForm extends Form
@@ -72,6 +72,5 @@ class LogonForm extends Form
             ->add($passwordFilter);
 
         $this->setInputFilter($inputFilter);
-
     }
 }

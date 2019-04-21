@@ -27,8 +27,7 @@ class RevealItemHandler implements RequestHandlerInterface
     public function __construct(
         ClientInterface $spxClient,
         IdentHelper $identHelper
-    )
-    {
+    ) {
         $this->spxClient = $spxClient;
         $this->identHelper = $identHelper;
     }
@@ -38,7 +37,7 @@ class RevealItemHandler implements RequestHandlerInterface
         $ih = $this->identHelper;
 
         if ($ih() === null) {
-            return new JsonResponse([],204);
+            return new JsonResponse([], 204);
         }
 
         $itemId = $request->getAttribute('itemid');
@@ -47,11 +46,14 @@ class RevealItemHandler implements RequestHandlerInterface
         $inputValidatorChain->attach(new Alnum());
 
         if (!$inputValidatorChain->isValid($itemId)) {
-            return new JsonResponse([],404);
+            return new JsonResponse([], 404);
         }
 
         try {
-            $itemData = json_decode($this->spxClient->request('GET', "car-for-sale/id/$itemId")->getBody()->getContents(), true);
+            $itemData = json_decode(
+                $this->spxClient->request('GET', "car-for-sale/id/$itemId")->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
             $itemData = [];
             error_log(
@@ -61,8 +63,7 @@ class RevealItemHandler implements RequestHandlerInterface
         }
         if (!empty($itemData)) {
             return new JsonResponse($itemData, 200);
-        }
-        else {
+        } else {
             return new JsonResponse($itemData, 404);
         }
     }

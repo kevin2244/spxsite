@@ -24,9 +24,9 @@ class CarModelHandler implements RequestHandlerInterface
     private $spxClient;
 
     public function __construct(
+        GuzzleHttp\ClientInterface $spxClient,
         Template\TemplateRendererInterface $template = null,
-        $marquemap = [],
-        GuzzleHttp\ClientInterface $spxClient
+        $marquemap = []
     ) {
         $this->template  = $template;
         $this->marquemap = $marquemap;
@@ -40,11 +40,19 @@ class CarModelHandler implements RequestHandlerInterface
         $modelid  = $idfilter->filter($request->getAttribute('modelid'));
 
         try {
-            $modelData = json_decode($this->spxClient->request('GET', "model/modelid/$modelid")->getBody()->getContents(), true);
+            $modelData = json_decode(
+                $this->spxClient->request(
+                    'GET',
+                    "model/modelid/$modelid"
+                )->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
             $modelData = [];
-            error_log('GuzzleException' . $e->getMessage(),
-                E_USER_ERROR);
+            error_log(
+                'GuzzleException' . $e->getMessage(),
+                E_USER_ERROR
+            );
         }
 
         $data = [];
@@ -52,6 +60,8 @@ class CarModelHandler implements RequestHandlerInterface
         $data['modelid'] = $modelid;
         $data['marquemap'] = $this->marquemap;
 
-        return new HtmlResponse($this->template->render('app::car-model', $data));
+        return new HtmlResponse(
+            $this->template->render('app::car-model', $data)
+        );
     }
 }

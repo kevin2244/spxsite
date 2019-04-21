@@ -54,13 +54,14 @@ class VerifyHandler implements RequestHandlerInterface
             $response = $this->spxClient->request('GET', "/verifyuser/$token");
             $verified = json_decode($response->getBody()->getContents(), true);
         } catch (GuzzleException $e) {
-
-            error_log('GuzzleException' . $e->getMessage(),
-                E_USER_ERROR);
+            error_log(
+                'GuzzleException' . $e->getMessage(),
+                E_USER_ERROR
+            );
         }
 
         if (array_key_exists('verified', $verified)) {
-            if  ($verified['verified'] === true) {
+            if ($verified['verified'] === true) {
                 $data['verified'] = 'Verified';
             }
         }

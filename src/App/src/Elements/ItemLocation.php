@@ -32,7 +32,6 @@ class ItemLocation extends Element implements InputProviderInterface
             $this->validator->attach((new Validator\NotEmpty()))
                 ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
                 ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'\-–—]+$/i']));
-
         }
         return $this->validator;
     }

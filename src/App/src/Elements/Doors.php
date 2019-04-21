@@ -13,7 +13,7 @@ use Zend\InputFilter\InputProviderInterface;
 use Zend\Validator;
 use Zend\Validator\ValidatorInterface;
 
-class  Doors extends Element\Select implements InputProviderInterface
+class Doors extends Element\Select implements InputProviderInterface
 {
 
     public function __construct($name = null, array $options = [])

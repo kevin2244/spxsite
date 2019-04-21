@@ -11,9 +11,6 @@ namespace App\viewhelpers;
 use Psr\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
 
-
-
-
 class IdentHelperFactory
 {
     public function __invoke(ContainerInterface $container)

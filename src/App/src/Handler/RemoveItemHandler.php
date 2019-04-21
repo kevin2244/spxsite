@@ -19,7 +19,7 @@ class RemoveItemHandler implements RequestHandlerInterface
     /** @var ClientInterface */
     private $spxClient;
 
-    public function __construct( ClientInterface $clientInterface)
+    public function __construct(ClientInterface $clientInterface)
     {
         $this->spxClient = $clientInterface;
     }
@@ -39,9 +39,7 @@ class RemoveItemHandler implements RequestHandlerInterface
             $status = $response->getStatusCode();
             $data = json_decode($response->getBody()->getContents());
         } catch (GuzzleException $e) {
-
             if ($e instanceof GuzzleHttp\Exception\RequestException) {
-
                 // replace the original message (possibly truncated),
                 // with the full text of the response body.
                 if (!empty($e->getResponse())) {

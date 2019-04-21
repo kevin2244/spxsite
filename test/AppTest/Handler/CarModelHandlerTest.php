@@ -47,7 +47,7 @@ class CarModelHandlerTest extends TestCase
         $request->getAttribute('modelid')->willReturn($requestedModelId);
 
         $handler = new CarModelHandler(
-            $templateRenderer->reveal(), $marquemap, $apiprophecy->reveal()
+            $apiprophecy->reveal(), $templateRenderer->reveal(), $marquemap
         );
 
         $this->assertResponseHasStatus(

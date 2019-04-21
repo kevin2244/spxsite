@@ -35,6 +35,5 @@ class EditItemForm extends AddItemForm
             'name' => 'id',
             'type' => 'hidden',
         ]);
-
     }
 }

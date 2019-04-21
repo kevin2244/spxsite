@@ -14,7 +14,6 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\I18n\Validator\Alnum;
 use Zend\Validator\ValidatorChain;
 
-
 class ItemHandler implements RequestHandlerInterface
 {
     /**
@@ -44,11 +43,20 @@ class ItemHandler implements RequestHandlerInterface
         $inputValidatorChain->attach(new Alnum());
 
         if (!$inputValidatorChain->isValid($itemId)) {
-            return new HtmlResponse($this->renderer->render('error::404'), 404);
+            return new HtmlResponse(
+                $this->renderer->render('error::404'),
+                404
+            );
         }
 
         try {
-            $itemData = json_decode($this->spxClient->request('GET', "car-for-sale/id/$itemId")->getBody()->getContents(), true);
+            $itemData = json_decode(
+                $this->spxClient->request(
+                    'GET',
+                    "car-for-sale/id/$itemId"
+                )->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
             $itemData = [];
             error_log(
@@ -62,7 +70,13 @@ class ItemHandler implements RequestHandlerInterface
 
 
         try {
-            $photoData = json_decode($this->spxClient->request('GET', "edit-car-photos/id/$itemId")->getBody()->getContents(), true);
+            $photoData = json_decode(
+                $this->spxClient->request(
+                    'GET',
+                    "edit-car-photos/id/$itemId"
+                )->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
             $photoData = [];
             error_log(

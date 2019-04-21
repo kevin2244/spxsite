@@ -21,7 +21,8 @@ class ToggleSecondsHelper extends AbstractHelper
     /** @var AuthenticationServiceInterface */
     private $authenticationService;
 
-    public function __construct($showSeconds,
+    public function __construct(
+        $showSeconds,
         AuthenticationServiceInterface $authenticationService
     ) {
         $this->authenticationService = $authenticationService;

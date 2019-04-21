@@ -8,12 +8,12 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use Psr\Container\ContainerInterface;
-use Zend\Expressive\Template\TemplateRendererInterface;
 use App\Forms\RegistrationForm;
 use App\Model\SPXGuzzleClientFactory;
+use Psr\Container\ContainerInterface;
 use Zend\Expressive\Helper\ServerUrlHelper;
 use Zend\Expressive\Helper\UrlHelper;
+use Zend\Expressive\Template\TemplateRendererInterface;
 
 class RegistrationHandlerFactory
 {

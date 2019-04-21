@@ -55,19 +55,16 @@ class LogonHandler implements RequestHandlerInterface
 
 
         if ($request->getMethod() === 'POST') {
-
             $postData = $request->getParsedBody();
             $this->form->setData($postData);
 
             if ($this->form->isValid()) {
-
                 $authresult = $this->authenticate($request);
 
                 if ($authresult['isValid']) {
                     return new RedirectResponse('/');
                 }
-            }
-            else {
+            } else {
                 $data['success'] = 'Not Valid';
             }
         }
@@ -107,8 +104,7 @@ class LogonHandler implements RequestHandlerInterface
         if (!$result->isValid()) {
                 $authresult['username'] = $params['username'];
                 $authresult['error']    = 'The credentials provided are not valid';
-        }
-        else {
+        } else {
             $authresult['isValid'] =  true;
         }
 

@@ -18,6 +18,10 @@ class CarModelsHandlerFactory
     public function __invoke(ContainerInterface $container) : RequestHandlerInterface
     {
         $template = $container->get(TemplateRendererInterface::class);
-        return new CarModelsHandler($template, $container->get('config')['marques'],$container->get(SPXGuzzleClientFactory::class));
+        return new CarModelsHandler(
+            $container->get(SPXGuzzleClientFactory::class),
+            $template,
+            $container->get('config')['marques']
+        );
     }
 }

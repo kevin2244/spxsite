@@ -23,7 +23,6 @@ use Zend\Psr7Bridge\Psr7ServerRequest;
 use Zend\Validator\ValidatorChain;
 use function error_log;
 
-
 class EditItemHandler implements RequestHandlerInterface
 {
     /**
@@ -93,7 +92,14 @@ class EditItemHandler implements RequestHandlerInterface
         $uriQueryOptions['query']['_id'] = $itemId;
 
         try {
-            $itemData = json_decode($this->spxClient->request('GET', "cars-for-sale", $uriQueryOptions)->getBody()->getContents(), true);
+            $itemData = json_decode(
+                $this->spxClient->request(
+                    'GET',
+                    "cars-for-sale",
+                    $uriQueryOptions
+                )->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
             $itemData = [];
             error_log(
@@ -103,11 +109,15 @@ class EditItemHandler implements RequestHandlerInterface
         }
 
         $photoData = [];
-        if($itemData['_total_items'] === 1) {
+        if ($itemData['_total_items'] === 1) {
             try {
-                $photoData = json_decode($this->spxClient->request('GET',
-                    "edit-car-photos/id/$itemId")->getBody()->getContents(),
-                    true);
+                $photoData = json_decode(
+                    $this->spxClient->request(
+                        'GET',
+                        "edit-car-photos/id/$itemId"
+                    )->getBody()->getContents(),
+                    true
+                );
             } catch (GuzzleException $e) {
                 $photoData = [];
 
@@ -119,13 +129,11 @@ class EditItemHandler implements RequestHandlerInterface
         }
 
         if ($request->getMethod() === 'POST') {
-
             $params = $request->getParsedBody();
 
             $formNameId = $params['form-name-id'] ?? null;
 
             if ($formNameId === 'add-photo') {
-
                 //set data
                 $zendRequest = Psr7ServerRequest::toZend($request);
                 $post = \array_merge_recursive(
@@ -147,9 +155,11 @@ class EditItemHandler implements RequestHandlerInterface
 
                     //send to SPX API
                     try {
-                        $addPhotoResponse = $this->spxClient->request('POST',
+                        $addPhotoResponse = $this->spxClient->request(
+                            'POST',
                             "add-car-photo/itemid/$itemId",
-                            ['body' => $stream]);
+                            ['body' => $stream]
+                        );
                     } catch (GuzzleException $e) {
                         error_log(
                             'GuzzleException' . $e->getMessage(),
@@ -159,7 +169,6 @@ class EditItemHandler implements RequestHandlerInterface
 
                     $upStatusMessage = '';
                     if (!empty($addPhotoResponse)) {
-
                         $upStatus = $addPhotoResponse->getStatusCode();
 
                         switch ($upStatus) {
@@ -174,14 +183,11 @@ class EditItemHandler implements RequestHandlerInterface
                 } else {
                     $messages = $this->addPhotosForm->getMessages();
                 }
-            }
-            elseif ($formNameId === 'edit-item') {
-
+            } elseif ($formNameId === 'edit-item') {
                 $data['add_item_success'] = false;
                 $this->editItemForm->setData($params);
 
                 if ($this->editItemForm->isValid()) {
-
                     $data['form_success'] = 'Valid';
 
                     $newItemData = $this->editItemForm->getData();
@@ -216,7 +222,10 @@ class EditItemHandler implements RequestHandlerInterface
 
         //get data
         try {
-            $itemvals = json_decode($this->spxClient->request('GET', "car-for-sale/id/$itemId")->getBody()->getContents(), true);
+            $itemvals = json_decode(
+                $this->spxClient->request('GET', "car-for-sale/id/$itemId")->getBody()->getContents(),
+                true
+            );
         } catch (GuzzleException $e) {
             $itemData = [];
             error_log(

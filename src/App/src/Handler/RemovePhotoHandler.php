@@ -18,7 +18,7 @@ class RemovePhotoHandler implements RequestHandlerInterface
     /** @var ClientInterface */
     private $spxClient;
 
-    public function __construct( ClientInterface $clientInterface)
+    public function __construct(ClientInterface $clientInterface)
     {
         $this->spxClient = $clientInterface;
     }
@@ -36,7 +36,8 @@ class RemovePhotoHandler implements RequestHandlerInterface
                 "car-photo/itemid/$itemId/photoid/$photoId"
             );
             $status = $response->getStatusCode();
-            $data = json_decode($response->getBody()->getContents(),
+            $data = json_decode(
+                $response->getBody()->getContents(),
                 true
             );
         } catch (GuzzleException $e) {

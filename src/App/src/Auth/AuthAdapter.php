@@ -8,11 +8,10 @@ declare(strict_types=1);
 
 namespace App\Auth;
 
-use GuzzleHttp\Exception\GuzzleException;
-use Zend\Authentication\Result;
-use Zend\Authentication\Adapter\AdapterInterface;
 use GuzzleHttp;
-
+use GuzzleHttp\Exception\GuzzleException;
+use Zend\Authentication\Adapter\AdapterInterface;
+use Zend\Authentication\Result;
 
 class AuthAdapter implements AdapterInterface
 {
@@ -20,8 +19,7 @@ class AuthAdapter implements AdapterInterface
     private $username;
     private $spxClient;
 
-    public function __construct
-    (
+    public function __construct(
         GuzzleHttp\ClientInterface $spxClient
     ) {
         $this->spxClient = $spxClient;
@@ -51,7 +49,10 @@ class AuthAdapter implements AdapterInterface
 
         $auth = $this->getAuth();
 
-        $ret = new Result(Result::FAILURE_CREDENTIAL_INVALID, $this->username);
+        $ret = new Result(
+            Result::FAILURE_CREDENTIAL_INVALID,
+            $this->username
+        );
 
 
 
@@ -74,11 +75,19 @@ class AuthAdapter implements AdapterInterface
         $ret = [];
         $username = $this->username;
 
-       try {
-            $ret = json_decode($this->spxClient->request('GET', "getuserauth/$username")->getBody()->getContents(), true);
-       } catch (GuzzleException $e) {
-            error_log('GuzzleException' . $e->getMessage(),
-                E_USER_ERROR);
+        try {
+            $ret = json_decode(
+                $this->spxClient->request(
+                    'GET',
+                    "getuserauth/$username"
+                )->getBody()->getContents(),
+                true
+            );
+        } catch (GuzzleException $e) {
+            error_log(
+                'GuzzleException' . $e->getMessage(),
+                E_USER_ERROR
+            );
         }
         return $ret;
     }

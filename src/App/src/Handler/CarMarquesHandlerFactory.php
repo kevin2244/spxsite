@@ -17,12 +17,10 @@ class CarMarquesHandlerFactory
 {
     public function __invoke(ContainerInterface $container) : RequestHandlerInterface
     {
-        $template = $container->has(TemplateRendererInterface::class)
-            ? $container->get(TemplateRendererInterface::class)
-            : null;
-
-        return new CarMarquesHandler($template,
-            $container->get('config')['marques'],
-            $container->get(SPXGuzzleClientFactory::class));
+        return new CarMarquesHandler(
+            $container->get(SPXGuzzleClientFactory::class),
+            $container->get(TemplateRendererInterface::class),
+            $container->get('config')['marques']
+        );
     }
 }

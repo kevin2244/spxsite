@@ -15,8 +15,6 @@ use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\Diactoros\Response;
 use Zend\Expressive\Template\TemplateRendererInterface;
 
-
-
 class LogOffHandler implements RequestHandlerInterface
 {
 

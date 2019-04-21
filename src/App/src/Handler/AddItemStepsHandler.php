@@ -87,18 +87,15 @@ class AddItemStepsHandler implements RequestHandlerInterface
         if ($request->getMethod() === 'POST') {
             $postData = $request->getParsedBody();
             $postid = $postData['postid'] ?? null;
-            if (strpos($postid,  'addacar-step')  !== false) {
+            if (strpos($postid, 'addacar-step')  !== false) {
                 $handleform = true;
             }
         }
 
         if ($handleform) {
-
-
             $this->$stepform->setData($postData);
 
             if ($this->$stepform->isValid()) {
-
                 $data['form_success'] = 'Valid';
 
                 $dataStep = 'data_step_'.(string) $curstep;
@@ -106,7 +103,6 @@ class AddItemStepsHandler implements RequestHandlerInterface
                 $this->session->$dataStep = $this->$stepform->getData();
 
                 if ($curstep === $finalstep) {
-
                     $data['add_item_success'] = false;
 
                     $newItemData = array_merge(
@@ -134,24 +130,19 @@ class AddItemStepsHandler implements RequestHandlerInterface
                         json_decode($response->getBody()->getContents(), true)
                         :
                         [];
-                    error_log('Add Item Response: '.print_r($addItemResponse,true));
+                    error_log('Add Item Response: '.print_r($addItemResponse, true));
                     if (!empty($addItemResponse['add_car_success'])) {
-
                         $data['add_item_success'] = true;
                         $this->session->exchangeArray([]);
                         return new RedirectResponse('edititem/'.$addItemResponse['id']);
-
                     } else {
                         $renderForm = true;
                     }
-                }
-                else {
-
+                } else {
                     $this->session->step = $this->session->step + 1;
                     $stepform = 'step'.(string) ($curstep + 1) .'form';
                     $renderForm = true;
                 }
-
             } else {
                 $data['form_success'] = 'Form Not Valid';
                 $renderForm = true;

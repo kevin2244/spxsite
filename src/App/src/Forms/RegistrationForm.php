@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace App\Forms;
 
-use Zend\Form\Form;
-use Zend\Form\Element;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Input;
-use Zend\Validator;
-use Zend\I18n;
 use Zend\Captcha;
+use Zend\Form\Element;
+use Zend\Form\Form;
+use Zend\I18n;
+use Zend\InputFilter\Input;
+use Zend\InputFilter\InputFilter;
+use Zend\Validator;
 
 class RegistrationForm extends Form
 {

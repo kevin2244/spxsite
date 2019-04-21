@@ -46,7 +46,7 @@ class CarMarquesHandlerTest extends TestCase
         $request->getAttribute('marque')->willReturn($requestedMarque);
 
         $handler = new CarMarquesHandler(
-            $templateRenderer->reveal(), $marquemap, $apiprophecy->reveal()
+            $apiprophecy->reveal(), $templateRenderer->reveal(), $marquemap
         );
 
         $this->assertResponseHasStatus($handler->handle($request->reveal()), 200);
@@ -70,7 +70,7 @@ class CarMarquesHandlerTest extends TestCase
         $request->getAttribute('marque')->willReturn($requestedMarque);
 
         $handler = new CarMarquesHandler(
-            $templateRenderer->reveal(), $marquemap, $apiprophecy->reveal()
+            $apiprophecy->reveal(), $templateRenderer->reveal(), $marquemap
         );
 
         $this->assertResponseHasStatus($handler->handle($request->reveal()), 404);
