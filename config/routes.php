@@ -59,7 +59,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->get('/addcar', [
         AuthMiddleware::class,
-        //SessionMiddleware::class,
         App\Handler\AddItemHandler::class
         ],
         'additem'
@@ -67,10 +66,27 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->post('/addcar', [
         AuthMiddleware::class,
-        //SessionMiddleware::class,
         App\Handler\AddItemHandler::class
         ],
         'additem-post');
+
+    $app->get('/addacar[/clear/{clear:.*}]', [
+        AuthMiddleware::class,
+        App\Handler\AddItemStepsHandler::class
+    ],
+        'additemstep'
+    );
+
+
+
+
+    $app->post('/addacar', [
+        AuthMiddleware::class,
+        App\Handler\AddItemStepsHandler::class
+    ],
+        'additemstep-post');
+
+
 
     $app->get('/item/{itemid:.*}', App\Handler\ItemHandler::class, 'item');
     $app->get('/removeitem/{itemid:.*}', App\Handler\RemoveItemHandler::class, 'removeitem');

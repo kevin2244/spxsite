@@ -53,7 +53,8 @@ foreach ($dispitemdata as $f => $v) {
 
 
 
-    $itemField = ucfirst(htmlspecialchars($f));
+    $itemField = ucwords(str_replace('_',' ',htmlspecialchars($f)));
+
     $v = htmlspecialchars($v);
 
 
@@ -159,7 +160,6 @@ $( document ).ready(function() {
 
 
             if (xhr.status === 200) {
-                console.log('Got Data' + data.contact_phone);
 
                 //reveal the number...
                 $("#contactphone").text(data.contact_phone);

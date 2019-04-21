@@ -6,12 +6,12 @@ namespace App\Handler;
 
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
-use GuzzleHttp\Exception\GuzzleException;
 
 class ItemListHandler implements RequestHandlerInterface
 {
@@ -61,7 +61,7 @@ class ItemListHandler implements RequestHandlerInterface
         } catch (GuzzleException $e) {
             $itemList = [];
             error_log(
-                'GuzzleException' . $e->getMessage(),
+                'GuzzleException Found ' . $e->getMessage(),
                 E_USER_ERROR
             );
         }

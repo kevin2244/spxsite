@@ -22,7 +22,8 @@ class EditItemHandlerFactory
             $container->get(AddPhotosForm::class),
             $container->get(UrlHelper::class),
             $container->get(IdentHelper::class),
-            $container->get(EditItemForm::class)
+            $container->get(EditItemForm::class),
+            $container->get('config')
         );
     }
 }

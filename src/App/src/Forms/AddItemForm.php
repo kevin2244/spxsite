@@ -4,11 +4,11 @@
  * Date: 21/09/2018
  * Time: 12:21
  */
-
 declare(strict_types=1);
 
 namespace App\Forms;
 
+use App\Elements;
 use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\I18n;
@@ -22,17 +22,11 @@ class AddItemForm extends Form
     {
         parent::__construct($name, $options);
 
-        $this->add([
-            'name'    => 'marque',
-            'options' => ['label' => 'Make',],
-            'type'    => 'text',
-        ]);
+        $this->add(new Elements\Marque('marque'));
+        $this->add(new Elements\Model('model'));
+        $this->add(new Elements\YearFirstRegistration('year_first_registration'));
+        $this->add(new Elements\Mileage('mileage'));
 
-        $this->add([
-            'name'    => 'model',
-            'options' => ['label' => 'Model',],
-            'type'    => 'text',
-        ]);
 
         $this->add([
             'name'    => 'item_location',
@@ -83,6 +77,7 @@ class AddItemForm extends Form
             'type'    => Element\Select::class,
         ]);
 
+
         $this->add([
             'name'    => 'transmission',
             'options' => [
@@ -126,17 +121,7 @@ class AddItemForm extends Form
 
         $inputFilter = new InputFilter();
 
-        $marqueFilter = new Input('marque');
-        $marqueFilter->getValidatorChain()
-            ->attach(new Validator\NotEmpty())
-            ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
-            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9 ,.\'\-–—]+$/i']));
 
-        $modelFilter = new Input('model');
-        $modelFilter->getValidatorChain()
-            ->attach(new Validator\NotEmpty())
-            ->attach(new Validator\StringLength(['min' => 1, 'max => 64']))
-            ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9    ,.\'\-–—]+$/i']));
 
         $colorFilter = new Input('color');
         $colorFilter->getValidatorChain()
@@ -162,6 +147,12 @@ class AddItemForm extends Form
             ->attach(new Validator\StringLength(['min' => 1, 'max => 6']))
             ->attach(new Validator\Digits());
 
+        $mileageFilter = new Input('mileage');
+        $mileageFilter->getValidatorChain()
+            ->attach(new Validator\NotEmpty())
+            ->attach(new Validator\StringLength(['min' => 1, 'max => 7']))
+            ->attach(new Validator\Digits());
+
         $itemLocationFilter = new Input('item_location');
         $itemLocationFilter->getValidatorChain()
             ->attach(new Validator\NotEmpty())
@@ -178,13 +169,10 @@ class AddItemForm extends Form
         $descriptionFilter = new Input('description');
         $descriptionFilter->setRequired(false);
         $descriptionFilter->getValidatorChain()
-            //->attach(new Validator\NotEmpty())
             ->attach(new Validator\StringLength(['min' => 1, 'max => 1024']))
             ->attach(new Validator\Regex(['pattern' =>'/^[a-z0-9    ,.\'\-–—£\$\(\)]+$/i']));
 
-
-        $inputFilter->add($marqueFilter)
-            ->add($modelFilter)
+        $inputFilter
             ->add($colorFilter)
             ->add($doorsFilter)
             ->add($fuelFilter)
@@ -192,8 +180,6 @@ class AddItemForm extends Form
             ->add($descriptionFilter)
             ->add($itemLocationFilter)
             ->add($contactPhoneFilter);
-
-
 
         $this->setInputFilter($inputFilter);
     }

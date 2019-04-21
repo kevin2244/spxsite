@@ -15,7 +15,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Form\FormInterface;
-use function array_intersect_key;
 use function error_log;
 
 class AddItemHandler implements RequestHandlerInterface
@@ -62,25 +61,15 @@ class AddItemHandler implements RequestHandlerInterface
 
         if ($handleform) {
 
+            error_log('Form Post Data: '.print_r($data, true));
+
             $data['add_item_success'] = false;
             $this->form->setData($postData);
 
             if ($this->form->isValid()) {
                 $data['form_success'] = 'Valid';
-                $itemDataFields = [
-                    'color',
-                    'marque',
-                    'model',
-                    'doors',
-                    'fuel',
-                    'transmission',
-                    'price',
-                    'description',
-                    'item_location',
-                    'contact_phone'
-                ];
 
-                $newItemData = array_intersect_key($postData, array_flip($itemDataFields));
+                $newItemData = $this->form->getData();
 
                 $newItemData['sellerid'] = $id;
 

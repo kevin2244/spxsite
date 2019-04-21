@@ -11,7 +11,6 @@ use App\Forms\EditItemForm;
 use App\Helpers\IdentHelper;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -47,13 +46,17 @@ class EditItemHandler implements RequestHandlerInterface
     /** @var IdentHelper */
     private $identHelper;
 
+    /** @var array */
+    private $config;
+
     public function __construct(
         TemplateRendererInterface $renderer,
         ClientInterface $spxClient,
         AddPhotosForm $addPhotosForm,
         UrlHelper $urlHelper,
         IdentHelper $identHelper,
-        EditItemForm $editItemForm
+        EditItemForm $editItemForm,
+        $config
     ) {
         $this->renderer = $renderer;
         $this->spxClient = $spxClient;
@@ -61,6 +64,7 @@ class EditItemHandler implements RequestHandlerInterface
         $this->urlHelper = $urlHelper;
         $this->identHelper = $identHelper;
         $this->editItemForm = $editItemForm;
+        $this->config = $config;
     }
 
     /**
@@ -93,7 +97,7 @@ class EditItemHandler implements RequestHandlerInterface
         } catch (GuzzleException $e) {
             $itemData = [];
             error_log(
-                'GuzzleException' . $e->getMessage(),
+                'GuzzleException ' . $e->getMessage(),
                 E_USER_ERROR
             );
         }
@@ -106,52 +110,18 @@ class EditItemHandler implements RequestHandlerInterface
                     true);
             } catch (GuzzleException $e) {
                 $photoData = [];
-                /*
+
                 error_log(
                     'GuzzleException ' . $e->getMessage(),
                     E_USER_ERROR
                 );
-                */
-                if ($e instanceof RequestException) {
-
-                    // replace the original message (possibly truncated),
-                    // with the full text of the response body.
-                    if (!empty($e->getResponse())) {
-                        $message = str_replace(
-                            rtrim($e->getMessage()),
-                            (string)$e->getResponse()->getBody(),
-                            (string)$e
-                        );
-                    } else {
-                        $message = $e->getMessage()
-                            . $e->getFile()
-                            . $e->getLine();
-                    }
-                    error_log('Guzzle RequestException: ' .
-                        $message, E_USER_ERROR);
-                } else {
-                    error_log('GuzzleException: '
-                        . $e->getMessage()
-                        . $e->getFile()
-                        . $e->getLine(), E_USER_ERROR);
-                }
-
-
-
-
-
-
-
-
-
-
-
             }
         }
 
         if ($request->getMethod() === 'POST') {
 
             $params = $request->getParsedBody();
+
             $formNameId = $params['form-name-id'] ?? null;
 
             if ($formNameId === 'add-photo') {
@@ -213,21 +183,8 @@ class EditItemHandler implements RequestHandlerInterface
                 if ($this->editItemForm->isValid()) {
 
                     $data['form_success'] = 'Valid';
-                    $itemDataFields = [
-                        'color',
-                        'marque',
-                        'model',
-                        'doors',
-                        'fuel',
-                        'transmission',
-                        'price',
-                        'description',
-                        'id',
-                        'item_location',
-                        'contact_phone'
-                    ];
 
-                    $newItemData = array_intersect_key($params, array_flip($itemDataFields));
+                    $newItemData = $this->editItemForm->getData();
                     $newItemData['sellerid'] = $userId;
 
                     try {
