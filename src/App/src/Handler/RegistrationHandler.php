@@ -162,12 +162,15 @@ EOF;
 
                     # Now, compose and send your message.
                     # $mg->messages()->send($domain, $params);
+
                     $mg->messages()->send($this->mailgunConfig['domain'], [
                         'from'    => $this->mailgunConfig['from'],
                         'to'      => $newUserData['person']['email'],
                         'subject' => 'Scrappage Registration',
                         'text'    => $messageText,
                     ]);
+
+                    $data['verification_email_sent_to'] = $newUserData['person']['email'];
                 } else {
                     $data['user_add_success'] = false;
                 }

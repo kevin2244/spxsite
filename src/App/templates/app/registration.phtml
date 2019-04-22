@@ -90,7 +90,7 @@ EOF;
 <div><?php
         $addUserMessage  = '';
         if ($this->user_add_success === true) {
-            $addUserMessage = 'User added OK';
+            $addUserMessage = 'User added OK. Please verify your account by clicking the link in the email sent to '.$this->verification_email_sent_to ;
         }
         elseif ($this->user_add_success === false) {
             $addUserMessage = 'There was a problem adding the user';
